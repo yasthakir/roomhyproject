@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athena House, Hinjawadi - Roomhy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f2f6; 
+            color: #1F2937;
+        }
+        .light-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .glow-button { 
+            background: linear-gradient(90deg, #3b82f6, #06b6d4); 
+            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.45);
+        }
+        .horizontal-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .horizontal-slider {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+         .faq-question {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+            padding-top: 1rem;
+        }
+        .faq-item.active .icon-plus {
+            transform: rotate(45deg);
+        }
+        .icon-plus {
+            transition: transform 0.3s ease;
+        }
+         @media (min-width: 1024px) {
+            .sticky-booking-card { 
+                top: 100px; /* Header height (h-20 = 80px) + space */
+            }
+         }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-sm shadow-sm flex-shrink-0">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex h-20 items-center justify-between">
+                
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0">
+                        <img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto">
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-3 sm:gap-6">
+                    
+                    <nav class="hidden">
+                        <a href="index.html#why-roomhy" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+                        <a href="index.html#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact</a>
+                    </nav>
+
+                    <a href="index.html#register-property" class="flex-shrink-0 flex items-center space-x-1 bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Post <span class="hidden sm:inline">Your</span> Property</span>
+                    </a>
+                    
+                    <button id="menu-toggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i data-lucide="menu" class="w-7 h-7 text-gray-800"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+    
+    <div id="mobile-menu" class="fixed top-0 right-0 w-80 h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="flex justify-end p-4 flex-shrink-0">
+            <button id="menu-close" class="p-2">
+                <i data-lucide="x" class="w-6 h-6 text-gray-700"></i>
+            </button>
+        </div>
+
+        <div class="flex justify-between items-center px-6 py-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i data-lucide="users" class="w-6 h-6 text-gray-600"></i>
+                </div>
+                <span class="text-lg font-semibold text-gray-800">Hi Yasmine 👋</span>
+            </div>
+            <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Profile</a>
+        </div>
+
+        <div class="px-6 py-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 relative overflow-hidden">
+                <img src="images/post-property-bg.png" alt="Illustartion of people with house" class="absolute right-0 bottom-0 opacity-80 w-32 h-auto" style="pointer-events: none;">
+                <p class="font-semibold text-gray-800 mb-3 relative z-10">Looking to Sell/Rent your Property?</p>
+                <a href="index.html#register-property" class="block text-center w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors relative z-10">
+                    Post Property for Free
+                </a>
+            </div>
+        </div>
+
+        <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+            <a href="stays.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <span>Our Properties</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="heart" class="w-5 h-5 text-red-600"></i>
+                </div>
+                <span>Favorites</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                 <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="message-square" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <span>Chats</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="building" class="w-5 h-5 text-purple-600"></i>
+                </div>
+                <span>My Stays</span>
+            </a>
+            <a href="index.html#why-roomhy" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="info" class="w-5 h-5 text-yellow-600"></i>
+                </div>
+                <span>About Us</span>
+            </a>
+            <a href="index.html#contact" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="phone" class="w-5 h-5 text-cyan-600"></i>
+                </div>
+                <span>Contact Us</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t flex-shrink-0">
+            <a href="#" class="flex items-center space-x-4 p-3 rounded-lg text-red-600 hover:bg-red-50">
+                <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="log-out" class="w-5 h-5 text-gray-600"></i>
+                </div>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+
+    <main class="container mx-auto px-4 sm:px-6 py-6 md:py-10 mt-6">
+        <div class="flex justify-between items-center mb-6">
+            <nav class="text-sm font-medium text-gray-500">
+                <a href="stays.html" class="hover:text-blue-600 inline-flex items-center"> 
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>Back to listings
+                </a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="save-button" class="flex items-center space-x-2 text-gray-600 hover:text-red-600"> 
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span class="font-medium hidden sm:inline">Save</span>
+                </button>
+                <button id="share-button" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
+                    <span class="font-medium hidden sm:inline">Share</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-12">
+            <div class="lg:col-span-2 space-y-12">
+                 <section id="gallery" class="relative">
+                     <div class="lg:hidden">
+                        <div class="flex overflow-x-auto snap-x snap-mandatory horizontal-slider rounded-xl shadow-md">
+                            <div class="w-full flex-shrink-0 snap-center h-80"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop" alt="Main property view" class="w-full h-full object-cover"></div>
+                            <div class="w-full flex-shrink-0 snap-center h-80"><img src="https://images.unsplash.com/photo-1615875605825-5eb9bb5c6896?q=80&w=1974&auto=format&fit=crop" alt="Property view 2" class="w-full h-full object-cover"></div>
+                            <div class="w-full flex-shrink-0 snap-center h-80"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1932&auto=format&fit=crop" alt="Property view 3" class="w-full h-full object-cover"></div>
+                        </div>
+                    </div>
+                    <div class="hidden lg:grid grid-cols-2 gap-4 h-[450px] rounded-2xl overflow-hidden shadow-lg">
+                        <div class="h-full"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop" alt="Main property view" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                        <div class="grid grid-cols-1 gap-4 h-full">
+                            <div class="overflow-hidden h-full"><img src="https://images.unsplash.com/photo-1615875605825-5eb9bb5c6896?q=80&w=1974&auto=format&fit=crop" alt="Property view 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                            <div class="overflow-hidden h-full"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1932&auto=format&fit=crop" alt="Property view 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section>
+                    <div class="light-card rounded-2xl p-6 md:p-8">
+                        <div class="sm:flex sm:justify-between sm:items-start">
+                             <div class="mb-4 sm:mb-0">
+                                <span class="text-xs font-bold text-pink-800 bg-pink-100 px-3 py-1 rounded-full">For Girls</span>
+                                <h1 class="text-3xl font-bold text-gray-900 mt-2">Athena House</h1>
+                                 <div class="flex items-center mt-1">
+                                    <p class="text-gray-500 flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i>Hinjawadi, Pune</p>
+                                    <a href="#location" class="text-sm font-semibold text-blue-600 hover:underline ml-4">View on Map</a>
+                                </div>
+                            </div>
+                            <div class="text-left sm:text-right flex-shrink-0">
+                                <div class="flex items-center space-x-1 text-yellow-500">
+                                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                    <span class="font-bold text-lg text-gray-800">4.8</span>
+                                     <span class="text-sm text-gray-500">(12 Reviews)</span>
+                                </div>
+                                <div class="mt-1 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center space-x-1">
+                                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                    <span>Verified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-100 my-6"></div>
+
+                        <h3 class="font-bold text-lg mb-4">Quick Facts</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                            <div class="flex items-center"><i data-lucide="utensils-crossed" class="w-5 h-5 mr-2 text-blue-600"></i><span>Meals Included</span></div>
+                            <div class="flex items-center"><i data-lucide="wifi" class="w-5 h-5 mr-2 text-blue-600"></i><span>Free High-Speed Wifi</span></div>
+                            <div class="flex items-center"><i data-lucide="wind" class="w-5 h-5 mr-2 text-blue-600"></i><span>AC Rooms</span></div>
+                            <div class="flex items-center"><i data-lucide="sparkles" class="w-5 h-5 mr-2 text-blue-600"></i><span>Housekeeping</span></div>
+                            <div class="flex items-center"><i data-lucide="shield-check" class="w-5 h-5 mr-2 text-blue-600"></i><span>CCTV Security</span></div>
+                             <div class="flex items-center"><i data-lucide="bed-double" class="w-5 h-5 mr-2 text-blue-600"></i><span>Furnished Rooms</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold mb-6">Common Amenities</h2>
+                    <div class="light-card rounded-2xl p-6 md:p-8 grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4">
+                        <div class="flex items-center space-x-3"><i data-lucide="wifi" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">High-Speed Wi-Fi</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="wind" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Air Conditioning</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="tv" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Common TV</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="washing-machine" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Laundry Service</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="shield-check" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">24/7 Security</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="sparkles" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Housekeeping</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="fridge" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Refrigerator</span></div>
+                        <div class="flex items-center space-x-3"><i data-lucide="gamepad-2" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Gaming Zone</span></div>
+                         <div class="flex items-center space-x-3"><i data-lucide="car" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Parking Available</span></div>
+                         <div class="flex items-center space-x-3"><i data-lucide="plug-zap" class="w-6 h-6 text-blue-600 flex-shrink-0"></i><span class="font-medium">Power Backup</span></div>
+                    </div>
+                </section>
+                
+                 <section id="location" class="scroll-mt-24">
+                    <h2 class="text-2xl font-bold mb-6">Location & Nearby Places</h2>
+                    <div class="light-card rounded-2xl p-6 md:p-8">
+                        
+                        <div class="w-full h-80 bg-gray-200 rounded-xl overflow-hidden mb-6 shadow-inner">
+                             <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15125.93170782271!2d73.7302436871582!3d18.597144800000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bbc048041d6f%3A0x2c608fa4f67c696f!2sHinjawadi%2C%20Pune%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2sus!4v1730248835251!5m2!1sen!2sus" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                         
+                         <h3 class="text-xl font-semibold mb-4">What's Nearby?</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center"><i data-lucide="graduation-cap" class="w-5 h-5 mr-3 text-blue-600 flex-shrink-0"></i><span><span class="font-bold">Symbiosis Institute</span> - 1.5 km away</span></div>
+                            <div class="flex items-center"><i data-lucide="bus" class="w-5 h-5 mr-3 text-blue-600 flex-shrink-0"></i><span><span class="font-bold">Hinjawadi Phase 1 Bus Stop</span> - 300 m away</span></div>
+                            <div class="flex items-center"><i data-lucide="shopping-cart" class="w-5 h-5 mr-3 text-blue-600 flex-shrink-0"></i><span><span class="font-bold">Dmart Hinjawadi</span> - 800 m away</span></div>
+                            <div class="flex items-center"><i data-lucide="hospital" class="w-5 h-5 mr-3 text-blue-600 flex-shrink-0"></i><span><span class="font-bold">Ruby Hall Clinic</span> - 2 km away</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                 <section class="max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-4" id="faq-container">
+                        <div class="faq-item light-card rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="font-semibold text-lg">Are meals included in the rent?</h3>
+                                <i data-lucide="plus" class="w-5 h-5 icon-plus text-blue-600 flex-shrink-0"></i>
+                            </div>
+                            <p class="faq-answer text-gray-600">Yes, nutritious and delicious meals (breakfast, lunch, and dinner) are included in the monthly rent. We also provide evening snacks.</p>
+                        </div>
+                        <div class="faq-item light-card rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="font-semibold text-lg">Is there a curfew time?</h3>
+                                <i data-lucide="plus" class="w-5 h-5 icon-plus text-blue-600 flex-shrink-0"></i>
+                            </div>
+                            <p class="faq-answer text-gray-600">For the safety of our residents, we have a curfew of 10:30 PM. Exceptions can be made with prior approval from the warden for academic or personal reasons.</p>
+                        </div>
+                         <div class="faq-item light-card rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center">
+                                <h3 class="font-semibold text-lg">Are guests allowed?</h3>
+                                <i data-lucide="plus" class="w-5 h-5 icon-plus text-blue-600 flex-shrink-0"></i>
+                            </div>
+                            <p class="faq-answer text-gray-600">Yes, guests are allowed in the common areas during visiting hours (9 AM to 9 PM). Overnight stays for guests are not permitted.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-1 mt-12 lg:mt-0">
+                <div class="light-card p-6 rounded-2xl sticky sticky-booking-card"> 
+                    <p class="text-sm text-gray-500">Starting From</p>
+                    <p class="text-3xl font-bold">₹10,000 <span class="text-base font-normal text-gray-500">/ bed</span></p>
+                    
+                    <div class="mt-6 space-y-4">
+                        <div class="p-4 border rounded-lg hover:border-blue-600 cursor-pointer transition-colors">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold">Double Sharing</h4>
+                                <p class="font-bold text-lg">₹12,000</p>
+                            </div>
+                            <p class="text-sm text-gray-500">per person / month</p>
+                        </div>
+                         <div class="p-4 border-2 rounded-lg cursor-pointer border-blue-600 bg-blue-50/50">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold">Triple Sharing</h4>
+                                <p class="font-bold text-lg">₹10,000</p>
+                            </div>
+                            <p class="text-sm text-gray-500">per person / month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 space-y-3">
+                        <button class="w-full glow-button text-white font-bold py-3 px-4 rounded-lg text-lg">Bid Now</button>
+                        <button class="w-full bg-white border-2 border-blue-600 text-blue-600 font-bold py-3 px-4 rounded-lg hover:bg-blue-50 transition-colors text-lg">Request Callback</button>
+                    </div>
+
+                     <div class="mt-6 text-center text-sm text-gray-500">
+                        <i data-lucide="shield-check" class="w-4 h-4 inline-block mr-1 text-green-600"></i>
+                        Secure booking & Free cancellation*
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section id="recommended-properties" class="mt-16 md:mt-24">
+            <h2 class="text-2xl font-bold mb-8 text-gray-900">Roomhy Recommended</h2>
+            <div class="relative">
+                <button id="recommended-prev" class="absolute -left-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <div id="recommended-slider" class="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider">
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1916&auto=format&fit=crop" alt="Recommended Property 1" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">Co-Living</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">The Hive</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Koramangala, BLR</p>
+                                <p class="font-bold mt-2">₹18,000 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1567016432779-1fee749a1532?q=80&w=1974&auto:format&fit=crop" alt="Recommended Property 2" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">Private Studio</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">Campus Corner</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">North Campus, Delhi</p>
+                                <p class="font-bold mt-2">₹13,000 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto:format&fit=crop" alt="Recommended Property 3" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">Co-Living</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">Prime Student Living</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Saket Nagar, Indore</p>
+                                <p class="font-bold mt-2">₹11,000 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1932&auto:format&fit=crop" alt="Recommended Property 4" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">Apartment</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">Modern Loft</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Powai, Mumbai</p>
+                                <p class="font-bold mt-2">₹22,000 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <button id="recommended-next" class="absolute -right-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+
+         <section id="similar-properties" class="mt-16 md:mt-24">
+            <h2 class="text-2xl font-bold mb-8 text-gray-900">Similar Properties Near You</h2>
+            <div class="relative">
+                <button id="similar-prev" class="absolute -left-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <div id="similar-slider" class="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider">
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto:format&fit=crop" alt="Similar Property 1" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">For Boys</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">Modern Student Hub</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Hinjawadi, Pune</p>
+                                <p class="font-bold mt-2">₹11,000 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop" alt="Similar Property 2" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">Co-Ed</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">The Scholar's Den</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Wakad, Pune</p>
+                                <p class="font-bold mt-2">₹14,500 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-80">
+                        <div class="light-card rounded-xl overflow-hidden h-full">
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto:format&fit=crop" alt="Similar Property 3" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <p class="text-sm text-gray-500">For Girls</p>
+                                <h3 class="font-bold text-lg mt-1 truncate">Campus Comforts PG</h3>
+                                <p class="text-gray-500 text-sm mt-1 truncate">Hinjawadi, Pune</p>
+                                <p class="font-bold mt-2">₹10,500 <span class="text-sm font-normal text-gray-500">/ mo</span></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <button id="similar-next" class="absolute -right-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+
+    </main>
+
+    <a href="index.html#contact" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <footer class="bg-gray-800 text-gray-300 flex-shrink-0 mt-auto"> 
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+                <div class="md:col-span-1"><a href="index.html" class="mb-4 inline-block"><img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto brightness-0 invert"></a><p class="text-gray-400 text-sm">Your trusted partner in finding the perfect student accommodation. Live, learn, and grow with us.</p><div class="flex space-x-5 mt-6"><a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a><a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a><a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a></div></div>
+                <div><h4 class="font-semibold text-lg mb-5 text-white">Explore</h4><ul class="space-y-3"><li><a href="stays.html" class="text-gray-300 hover:text-white transition-colors">Apartments</a></li><li><a href="stays.html" class="text-gray-300 hover:text-white transition-colors">Hostels</a></li><li><a href="stays.html" class="text-gray-300 hover:text-white transition-colors">Co-Living</a></li><li><a href="stays.html" class="text-gray-300 hover:text-white transition-colors">PGs</a></li></ul></div>
+                <div><h4 class="font-semibold text-lg mb-5 text-white">Company</h4><ul class="space-y-3"><li><a href="index.html#why-roomhy" class="text-gray-300 hover:text-white transition-colors">About Us</a></li><li><a href="index.html#register-property" class="text-gray-300 hover:text-white transition-colors">List Your Property</a></li><li><a href="#" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li><li><a href="#" class="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li></ul></div>
+                <div><h4 class="font-semibold text-lg mb-5 text-white">Get in Touch</h4><ul class="space-y-3"><li class="flex items-start space-x-2"><i data-lucide="mail" class="w-4 h-4 text-gray-400 mt-1 flex-shrink-0"></i><a href="mailto:support@roomhy.com" class="text-gray-300 hover:text-white transition-colors">support@roomhy.com</a></li><li class="flex items-start space-x-2"><i data-lucide="phone" class="w-4 h-4 text-gray-400 mt-1 flex-shrink-0"></i><a href="tel:+911234567890" class="text-gray-300 hover:text-white transition-colors">+91 12345 67890</a></li><li class="flex items-start space-x-2"><i data-lucide="map-pin" class="w-4 h-4 text-gray-400 mt-1 flex-shrink-0"></i><span class="text-gray-300">Bengaluru, India</span></li></ul></div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8 text-center text-gray-400 text-sm"><p>© 2025 Roomhy. All Rights Reserved. Built with ❤️ for students.</p></div>
+        </div>
+    </footer>
+    
+    <div id="share-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" id="share-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Share this Property</h3>
+                <button id="close-modal-button" class="text-gray-400 hover:text-gray-800"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <p class="text-gray-600 mb-4">Copy the link below to share this amazing find!</p>
+            <div class="flex items-center space-x-2">
+                <input type="text" id="share-link-input" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600">
+                <button id="copy-link-button" class="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 w-28 text-center">Copy</button> 
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        lucide.createIcons();
+
+        /* Mobile Side Menu JS */
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        if (menuToggle && mobileMenu && menuClose && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-full');
+                menuOverlay.classList.remove('hidden');
+            });
+            const closeMenu = () => {
+                mobileMenu.classList.add('translate-x-full');
+                menuOverlay.classList.add('hidden');
+            };
+            menuClose.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+            mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', closeMenu); });
+        }
+
+         /* FAQ Accordion Logic */
+         const faqContainer = document.getElementById('faq-container');
+         if(faqContainer) {
+            faqContainer.addEventListener('click', (e) => {
+                const faqItem = e.target.closest('.faq-item');
+                if (faqItem) {
+                    // Close other items
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        if(item !== faqItem && item.classList.contains('active')) {
+                            item.classList.remove('active');
+                        }
+                    });
+                    // Toggle clicked item
+                    faqItem.classList.toggle('active');
+                }
+            });
+         }
+        
+        /* Roomhy Recommended Slider (NEW) */
+        const recommendedSlider = document.getElementById('recommended-slider');
+        const recommendedPrev = document.getElementById('recommended-prev');
+        const recommendedNext = document.getElementById('recommended-next');
+        
+        if (recommendedSlider && recommendedPrev && recommendedNext) {
+            const recommendedCardWidth = recommendedSlider.querySelector(':first-child')?.offsetWidth + 24 || 344; // w-80 + gap-6
+            recommendedNext.addEventListener('click', () => {
+                recommendedSlider.scrollBy({ left: recommendedCardWidth, behavior: 'smooth' });
+            });
+            recommendedPrev.addEventListener('click', () => {
+                recommendedSlider.scrollBy({ left: -recommendedCardWidth, behavior: 'smooth' });
+            });
+        }
+
+        /* Similar Properties Slider */
+        const similarSlider = document.getElementById('similar-slider');
+        const similarPrev = document.getElementById('similar-prev');
+        const similarNext = document.getElementById('similar-next');
+        
+        if (similarSlider && similarPrev && similarNext) {
+            const similarCardWidth = similarSlider.querySelector(':first-child')?.offsetWidth + 24 || 344; // w-80 + gap-6
+            similarNext.addEventListener('click', () => {
+                similarSlider.scrollBy({ left: similarCardWidth, behavior: 'smooth' });
+            });
+            similarPrev.addEventListener('click', () => {
+                similarSlider.scrollBy({ left: -similarCardWidth, behavior: 'smooth' });
+            });
+        }
+
+
+        /* Share Modal Logic */
+        const shareButton = document.getElementById('share-button');
+        const shareModal = document.getElementById('share-modal');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const shareLinkInput = document.getElementById('share-link-input');
+        const copyLinkButton = document.getElementById('copy-link-button');
+
+        if(shareButton && shareModal && closeModalButton && shareLinkInput && copyLinkButton) {
+            shareButton.addEventListener('click', () => {
+                shareLinkInput.value = window.location.href; // Get current URL
+                shareModal.classList.remove('hidden');
+                shareModal.classList.add('flex');
+                 setTimeout(() => copyLinkButton.textContent = 'Copy', 100); // Reset copy button text
+            });
+
+            const hideModal = () => {
+                shareModal.classList.add('hidden');
+                shareModal.classList.remove('flex');
+            };
+
+            closeModalButton.addEventListener('click', hideModal);
+            shareModal.addEventListener('click', (e) => {
+                if (e.target === shareModal) { 
+                    hideModal();
+                }
+            });
+            
+            copyLinkButton.addEventListener('click', () => {
+                shareLinkInput.select();
+                shareLinkInput.setSelectionRange(0, 99999); 
+                
+                try {
+                     if (navigator.clipboard && navigator.clipboard.writeText) {
+                         navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+                            copyLinkButton.textContent = 'Copied!';
+                            setTimeout(() => copyLinkButton.textContent = 'Copy', 2000);
+                         }).catch(err => {
+                             console.error('Async: Could not copy text: ', err);
+                             legacyCopy(); 
+                         });
+                     } else {
+                        legacyCopy(); 
+                     }
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+            });
+
+            function legacyCopy() {
+                 try {
+                    document.execCommand('copy');
+                    copyLinkButton.textContent = 'Copied!';
+                    setTimeout(() => copyLinkButton.textContent = 'Copy', 2000);
+                 } catch (err) {
+                     console.error('Fallback copy failed: ', err);
+                 }
+            }
+        }
+
+        /* Save Button Placeholder Logic */
+        const saveButton = document.getElementById('save-button');
+        if (saveButton) {
+            let isSaved = false; 
+            const heartIcon = saveButton.querySelector('i[data-lucide="heart"]');
+
+            function updateSaveButton() {
+                 if (isSaved) {
+                    heartIcon.classList.add('fill-red-500', 'text-red-500'); 
+                    saveButton.classList.remove('text-gray-600', 'hover:text-red-600');
+                    saveButton.classList.add('text-red-600'); 
+                 } else {
+                    heartIcon.classList.remove('fill-red-500', 'text-red-500'); 
+                    saveButton.classList.remove('text-red-600');
+                    saveButton.classList.add('text-gray-600', 'hover:text-red-600');
+                 }
+            }
+
+            saveButton.addEventListener('click', () => {
+                 isSaved = !isSaved; 
+                 updateSaveButton();
+                 console.log("Save status toggled:", isSaved);
+            });
+
+            updateSaveButton();
+        }
+
+    </script>
+</body>
+</html>

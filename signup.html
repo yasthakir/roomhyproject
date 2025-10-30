@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup - Roomhy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                keyframes: {
+                    kenburns: {
+                        '0%': { transform: 'scale(1) translate(0, 0)' },
+                        '100%': { transform: 'scale(1.1) translate(-2%, 2%)' },
+                    },
+                    'slide-left': {
+                        '0%': { transform: 'translateX(0%)' },
+                        '100%': { transform: 'translateX(-50%)' },
+                    },
+                    'slide-right': {
+                        '0%': { transform: 'translateX(-50%)' },
+                        '100%': { transform: 'translateX(0%)' },
+                    }
+                },
+                    animation: {
+                        kenburns: 'kenburns 30s ease-in-out infinite alternate',
+                        'slide-left-infinite': 'slide-left 40s linear infinite',
+                        'slide-right-infinite': 'slide-right 40s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f2f6; 
+            color: #1F2937;
+        }
+
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        
+        .glow-button {
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .horizontal-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .horizontal-slider {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .cta-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1582693630824-53c825364347?q=80&w=2070&auto:format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+      /* ====== Premium Footer Styling ====== */
+        .footer {
+          font-family: 'Inter', sans-serif;
+          color: #e5e7eb;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .footer a {
+          color: #cbd5e1;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+          color: #60a5fa;
+        }
+        
+        .footer-top {
+          background: rgba(255, 255, 255, 0.04);
+          text-align: center;
+          padding: 2rem 1.5rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .footer-top h2 {
+          font-size: 1.4rem;
+          color: #ffffff;
+          margin-bottom: 1.5rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          
+        }
+        
+        .footer-presence {
+          display: flex;
+          justify-content: left;
+          flex-wrap: wrap;
+          gap: 450px;
+          padding-left: 50px;
+        }
+        
+        .footer-presence h4 {
+          color: #60a5fa;
+          margin-bottom: 0.6rem;
+        }
+        
+        .footer-presence ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-presence li {
+          margin: 0.3rem 0;
+        }
+        
+        .footer-main {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+          gap: 2rem;
+          padding: 3rem 2rem;
+          align-items: start;
+        }
+        
+        .footer-logo img {
+          width: 180px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo p {
+          color: #cbd5e1;
+          font-size: 0.95rem;
+        }
+        
+        .footer-links h4,
+        .footer-legal h4,
+        .footer-contact h4 {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 1rem;
+          position: relative;
+        }
+        
+        .footer-links h4::after,
+        .footer-legal h4::after,
+        .footer-contact h4::after {
+          content: '';
+          position: absolute;
+          bottom: -0.4rem;
+          left: 0;
+          width: 40px;
+          height: 2px;
+          background: #60a5fa;
+          border-radius: 2px;
+        }
+        
+        .footer-links ul,
+        .footer-legal ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-legal li {
+          margin-bottom: 0.4rem;
+        }
+        
+        .footer-contact p {
+          color: #d1d5db;
+          margin: 0.4rem 0;
+          font-size: 0.95rem;
+        }
+        
+        .footer-contact i {
+          color: #60a5fa;
+          margin-right: 0.4rem;
+        }
+        
+        .footer-social {
+          margin-top: 0.8rem;
+        }
+        
+        .footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+          width: 35px;
+          height: 35px;
+          border-radius: 8px;
+          margin-right: 0.6rem;
+          transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+          background: #60a5fa;
+          color: #0f172a;
+          transform: translateY(-4px);
+        }
+        
+        .footer-bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          text-align: center;
+          padding: 1rem;
+          font-size: 0.9rem;
+          color: #9ca3af;
+          background: rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+          .footer-presence {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            padding-left: 1rem;
+            gap: 0;
+           
+          }
+        
+          .footer-main {
+            grid-template-columns: 1fr;
+            text-align: left;
+          }
+        
+          .footer-logo img {
+            margin-bottom: 1rem;
+          }
+        
+          .footer-social {
+            justify-content: flex-start;
+          }
+        }
+
+        /* ====== LOGIN/SIGNUP SPECIFIC STYLES ====== */
+
+        #auth-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px; /* Max width for the container */
+            min-height: 600px;
+            background: #fff;
+            border-radius: 1.5rem; /* rounded-2xl */
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        /* Panels for sliding */
+        .form-panel, .image-panel {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Easing for bounce effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .form-panel {
+            left: 0;
+            z-index: 10;
+        }
+
+        .image-panel {
+            left: 50%;
+            z-index: 20;
+            background: linear-gradient(135deg, #e0f2f7 0%, #c1e4f0 100%); /* Light blue gradient from image */
+            color: #1f2937; /* Dark text for light background */
+            text-align: center;
+        }
+        
+        .image-panel img {
+            width: 80%;
+            max-width: 350px;
+            margin-bottom: 1rem;
+        }
+
+        /* Form content (Login vs Signup) */
+        .form-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.6s ease-in-out;
+            backface-visibility: hidden; /* Prevents flicker */
+        }
+        
+        .form-wrapper {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        #login-form-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        #signup-form-content {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        /* STATE: SIGNUP ACTIVE (Desktop) */
+        #auth-container.signup-active .form-panel {
+            transform: translateX(100%);
+        }
+
+        #auth-container.signup-active .image-panel {
+            transform: translateX(-100%);
+        }
+        
+        #auth-container.signup-active #login-form-content {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        #auth-container.signup-active #signup-form-content {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 0.1s; /* Slight delay */
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            #auth-container {
+                min-height: 800px; /* Taller for stacked content */
+                max-width: 95%;
+            }
+            
+            .form-panel, .image-panel {
+                width: 100%;
+                height: 50%;
+                padding: 1rem;
+            }
+
+            .form-panel {
+                left: 0;
+                top: 50%; /* Form panel at the bottom */
+                /* Make panel itself hidden, inner content will scroll */
+                overflow: hidden; 
+            }
+
+            .image-panel {
+                left: 0;
+                top: 0; /* Image panel at the top */
+                border-radius: 0 0 1.5rem 1.5rem; /* Rounded bottom corners */
+            }
+            
+            .image-panel img {
+                max-width: 250px;
+            }
+            
+            .form-content {
+                position: absolute;
+                width: 100%;
+                /* === MODIFICATION === */
+                height: 100%; /* Make it fill the panel */
+                display: flex;
+                align-items: flex-start; /* Align to the top */
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+                justify-content: center;
+                transition: all 0.6s ease-in-out;
+                backface-visibility: hidden;
+                /* === THIS IS THE FIX === */
+                overflow-y: auto; /* MAKE THE CONTENT SCROLLABLE */
+            }
+            
+            #signup-form-content {
+                transform: translateY(100%);
+            }
+
+            /* STATE: SIGNUP ACTIVE (Mobile) */
+            #auth-container.signup-active .form-panel {
+                transform: translateY(-100%);
+            }
+
+            #auth-container.signup-active .image-panel {
+                transform: translateY(100%);
+            }
+            
+            #auth-container.signup-active #login-form-content {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+    
+            #auth-container.signup-active #signup-form-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex h-20 items-center justify-between">
+                
+                <div class="flex items-center">
+                    <a href="index-logged-out.html" class="flex-shrink-0">
+                        <img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto">
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <nav class="hidden lg:flex items-center space-x-6">
+                        <a href="#why-roomhy" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+                        <a href="contact.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact Us</a>
+                    </nav>
+
+                    <a href="#auth-container" class="flex-shrink-0 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-5 py-2 rounded-lg text-sm font-semibold transition-colors ring-2 ring-blue-300 ring-offset-2">
+                        <span>Login/Signup</span>
+                    </a>
+                    
+                    <button id="menu-toggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i data-lucide="menu" class="w-7 h-7 text-gray-800"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <section class="relative py-20 md:py-28 text-white">
+        <div id="hero-image-wrapper" class="absolute inset-0 w-full h-full overflow-hidden">
+            
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1980&auto:format&fit=crop" 
+                 alt="Hero background 1" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-100">
+            
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 2" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
+            
+            <img src="httpsG://images.unsplash.com/photo-1494203484021-3c454daf695d?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 3" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
+
+            <div class="absolute inset-0 w-full h-full bg-black/60"></div> 
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-6 text-center relative z-10">
+            <h1 class=" text-1l md:text-4xl font-bold text-shadow mb-6 " style="color: #fffcf2;">
+                SEARCH.CONNECT.SUCCEED
+            </h1>
+            <div class="relative w-full max-w-2xl mx-auto">
+                <input type="text" placeholder="Search for 'PG near me' or 'Hostel in Kota'" class="w-full p-4 pl-5 pr-14 rounded-lg bg-white text-gray-900 border-transparent focus:ring-4 focus:ring-cyan-300/50 focus:outline-none placeholder-gray-500 shadow-lg">
+                <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 p-2.5 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    <i data-lucide="search" class="w-5 h-5 text-white"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+    
+    <div id="mobile-menu" class="fixed top-0 right-0 w-80 h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="flex justify-end p-4 flex-shrink-0">
+            <button id="menu-close" class="p-2">
+                <i data-lucide="x" class="w-6 h-6 text-gray-700"></i>
+            </button>
+        </div>
+
+        <div class="flex justify-between items-center px-6 py-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i data-lucide="users" class="w-6 h-6 text-gray-600"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-semibold text-gray-800">Hi Guest User 👋</span>
+                    <a href="#auth-container" class="text-sm font-medium text-blue-600 hover:underline">Login/Signup with RoomHy</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 relative overflow-hidden">
+                <img src="images/post.png" alt="Illustartion of people with house" class="absolute right-0 bottom-0 opacity-80 w-32 h-auto" style="pointer-events: none;">
+                <p class="font-semibold text-gray-800 mb-3 relative z-10">Looking to Sell/Rent your Property?</p>
+                <a href="#register-property" class="block text-center w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors relative z-10" style="width: 150px;">
+                    Post Property for Free
+                </a>
+            </div>
+        </div>
+
+        <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+            <a href="ourproperty.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <span>Our Properties</span>
+            </a>
+            <a href="index-logged-out.html#why-roomhy" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="info" class="w-5 h-5 text-yellow-600"></i>
+                </div>
+                <span>About Us</span>
+            </a>
+            <a href="contact.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="phone" class="w-5 h-5 text-cyan-600"></i>
+                </div>
+                <span>Contact Us</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t flex-shrink-0">
+            </div>
+    </div>
+        <main class="container mx-auto px-4 sm:px-6 py-8 md:py-16 flex items-center justify-center">
+        
+        <div id="auth-container" class="scroll-mt-20">
+            <div class="form-panel">
+                <div class="relative w-full max-w-sm overflow-hidden h-full">
+                    
+                    <div id="login-form-content" class="form-content">
+                        <div class="form-wrapper">
+                            <h2 class="text-3xl font-bold mb-3 text-gray-900">Log in</h2>
+                            <p class="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
+
+                            <form class="space-y-5">
+                                <div>
+                                    <label for="login-email" class="text-sm font-medium text-gray-700">Email or Phone</label>
+                                    <input type="text" id="login-email" name="email" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your email or phone">
+                                </div>
+                                <div>
+                                    <label for="login-password" class="text-sm font-medium text-gray-700">Password</label>
+                                    <input type="password" id="login-password" name="password" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Password">
+                                    <a href="#" class="text-sm text-blue-600 hover:underline mt-2 block text-right">Forgot Password?</a>
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">Log in</button>
+                            </form>
+                            
+                            <div class="relative my-6">
+                                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                    <div class="w-full border-t border-gray-300"></div>
+                                </div>
+                                <div class="relative flex justify-center">
+                                    <span class="bg-white px-2 text-sm text-gray-500">OR</span>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="w-full flex items-center justify-center gap-2 p-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors">
+                                <img src="httpsG://www.svgrepo.com/show/303108/google-icon-logo.svg" alt="Google logo" class="w-5 h-5">
+                                Log in with Google
+                            </button>
+
+                            <p class="text-center text-sm text-gray-600 mt-8">
+                                Don't have an account? <button type="button" id="show-signup-btn" class="text-blue-600 hover:underline font-semibold">Sign up</button>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="signup-form-content" class="form-content">
+                        <div class="form-wrapper">
+                            <h2 class="text-3xl font-bold mb-3 text-gray-900">Create Account</h2>
+                            <p class="text-gray-500 mb-8">Join Roomhy and find your perfect student home!</p>
+
+                            <form class="space-y-5">
+                                <div>
+                                    <label for="signup-name" class="text-sm font-medium text-gray-700">Full Name</label>
+                                    <input type="text" id="signup-name" name="name" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Your Full Name">
+                                </div>
+                                <div>
+                                    <label for="signup-email" class="text-sm font-medium text-gray-700">Email or Phone</label>
+                                    <input type="text" id="signup-email" name="email" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your email or phone">
+                                </div>
+                                <div>
+                                    <label for="signup-password" class="text-sm font-medium text-gray-700">Password</label>
+                                    <input type="password" id="signup-password" name="password" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Create a Password">
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">Sign Up</button>
+                            </form>
+                            <p class="text-center text-sm text-gray-600 mt-8">
+                                Already have an account? <button type="button" id="show-login-btn" class="text-blue-600 hover:underline font-semibold">Log in</button>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="image-panel">
+                <div class="max-w-xs text-center">
+                    <img id="auth-image" src="images/post.png" alt="Person sleeping" class="mx-auto mb-6">
+                    <h2 id="auth-image-title" class="text-3xl font-bold mb-3">Welcome to Roomhy!</h2>
+                    <p id="auth-image-text" class="text-lg">Find your perfect student home, hassle-free and with zero brokerage.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <a href="#" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+    <footer class="footer">
+      <div class="footer-top">
+        <h2>Our Presence</h2>
+        <div class="footer-presence">
+          <div>
+            <h4>Kota</h4>
+            <ul>
+              <li><a href="#">Hostels in Kota</a></li>
+              <li><a href="#">Apartments in Kota</a></li>
+              <li><a href="#">PG in Kota</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Indore</h4>
+            <ul>
+              <li><a href="#">Hostels in Indore</a></li>
+              <li><a href="#">Apartments in Indore</a></li>
+              <li><a href="#">PG in Indore</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Ahmedabad</h4>
+            <ul>
+              <li><a href="#">Hostels in Ahmedabad</a></li>
+              <li><a href="#">Apartments in Ahmedabad</a></li>
+              <li><a href="#">PG in Ahmedabad</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="https://roomhy.com/assets/logo.png" alt="Roomhy Logo">
+          <p>Discover Your Next Home, Together.</p>
+        </div>
+    
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="index-logged-out.html#why-roomhy">About Us</a></li>
+            <li><a href="ourproperty.html">Our Properties</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-legal">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="cancellation-policy.html">Cancellation Policy</a></li>
+            <li><a href="refund-policy.html">Refund Policy</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p><i class="fas fa-phone"></i> +91 99830 05030</p>
+          <p><i class="fas fa-envelope"></i> hello@roomhy.com</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    
+      <div class="footer-bottom">
+        <p>© 2025 <strong>Roomhy</strong>. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script>
+        lucide.createIcons();
+        
+        /*
+        ============================================================
+        JavaScript for Mobile Side Menu
+        ============================================================
+        */
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        if (menuToggle && mobileMenu && menuClose && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-full');
+                menuOverlay.classList.remove('hidden');
+            });
+
+            const closeMenu = () => {
+                mobileMenu.classList.add('translate-x-full');
+                menuOverlay.classList.add('hidden');
+            };
+
+            menuClose.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.href.includes('#')) {
+                        // This is an anchor link, close the menu
+                        // after a slight delay to allow navigation
+                        setTimeout(closeMenu, 100);
+                    }
+                    // For external links, no need to do anything special,
+                    // but we can also call closeMenu to be safe.
+                    closeMenu();
+                });
+            });
+        }
+        
+        /*
+        ============================================================
+        Hero Slideshow
+        ============================================================
+        */
+        const heroWrapper = document.getElementById('hero-image-wrapper');
+        if (heroWrapper) {
+            const heroImages = heroWrapper.querySelectorAll('img');
+            const totalHeroImages = heroImages.length;
+            let currentHeroIndex = 0;
+
+            if (totalHeroImages > 1) {
+                setInterval(() => {
+                    const nextHeroIndex = (currentHeroIndex + 1) % totalHeroImages;
+                    
+                    heroImages[currentHeroIndex].classList.remove('opacity-100');
+                    heroImages[currentHeroIndex].classList.add('opacity-0');
+                    
+                    heroImages[nextHeroIndex].classList.remove('opacity-0');
+                    heroImages[nextHeroIndex].classList.add('opacity-100');
+                    
+                    currentHeroIndex = nextHeroIndex;
+                }, 5000);
+            }
+        }
+        
+        /*
+        ============================================================
+        NEW JAVASCRIPT FOR LOGIN/SIGNUP SLIDER
+        ============================================================
+        */
+        const showSignupBtn = document.getElementById('show-signup-btn');
+        const showLoginBtn = document.getElementById('show-login-btn');
+        const authContainer = document.getElementById('auth-container');
+        const authImage = document.getElementById('auth-image');
+        const authImageTitle = document.getElementById('auth-image-title');
+        const authImageText = document.getElementById('auth-image-text');
+        
+        // --- IMPORTANT ---
+        // You MUST create these two image files in your `images` folder
+        const loginImage = "images/login-image.svg"; // The image from your screenshot
+        const signupImage = "images/signup-image.svg"; // A different image for signup
+        // --- IMPORTANT ---
+
+        if (showSignupBtn && showLoginBtn && authContainer && authImage) {
+            
+            showSignupBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                authContainer.classList.add('signup-active');
+                
+                // Change image and text
+                authImage.src = signupImage;
+                authImageTitle.textContent = "New to Roomhy?";
+                authImageText.textContent = "Sign up to discover verified properties, place bids, and find your community.";
+            });
+
+            showLoginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                authContainer.classList.remove('signup-active');
+
+                // Change image and text back
+                authImage.src = loginImage;
+                authImageTitle.textContent = "Welcome Back!";
+                authImageText.textContent = "Find your perfect student home, hassle-free and with zero brokerage.";
+            });
+        }
+        
+        /*
+        ============================================================
+        JavaScript for City Filter
+        ============================================================
+        */
+        document.querySelectorAll('.city-filter').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const city = this.dataset.city;
+                console.log("Filter by city:", city);
+                // On this page, we just scroll to the auth box
+                document.getElementById('auth-container').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+    </script>
+    </body>
+</html>

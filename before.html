@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roomhy - Find Your Student Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                keyframes: {
+                    kenburns: {
+                        '0%': { transform: 'scale(1) translate(0, 0)' },
+                        '100%': { transform: 'scale(1.1) translate(-2%, 2%)' },
+                    },
+                    // Keyframes for testimonial sliding
+                    'slide-left': {
+                        '0%': { transform: 'translateX(0%)' },
+                        '100%': { transform: 'translateX(-50%)' },
+                    },
+                    'slide-right': {
+                        '0%': { transform: 'translateX(-50%)' },
+                        '100%': { transform: 'translateX(0%)' },
+                    }
+                },
+                    animation: {
+                        kenburns: 'kenburns 30s ease-in-out infinite alternate',
+                        // Animations for testimonial sliding
+                        'slide-left-infinite': 'slide-left 40s linear infinite',
+                        'slide-right-infinite': 'slide-right 40s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f2f6; 
+            color: #1F2937;
+        }
+
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animate-gradient-flow {
+            background-size: 200% auto;
+            background-image: linear-gradient(to right, #06b6d4 0%, #3b82f6 50%, #06b6d4 100%);
+            animation: gradient-flow 10s ease infinite;
+        }
+
+        .light-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .light-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transform: translateY(-4px);
+        }
+        
+        .glow-button {
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .horizontal-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .horizontal-slider {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .offering-card-item {
+            opacity: 0;
+        }
+        .offering-card .overlay {
+            transition: background 0.4s ease;
+        }
+        .group:hover .offering-card .overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+        }
+        .offering-card h3 {
+            transition: transform 0.4s ease;
+            transform: translateY(10px);
+        }
+        .group:hover .offering-card h3 {
+            transform: translateY(0);
+        }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.7s ease-out forwards;
+        }
+
+        @keyframes card-slide-up {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-animate {
+            animation: card-slide-up 0.6s ease-out forwards;
+        }
+        .cta-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1582693630824-53c825364347?q=80&w=2070&auto:format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .testimonial-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin: 0 16px; /* Spacing between cards */
+            width: 350px; /* Fixed width for cards */
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-carousel {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        
+        .testimonial-track-inner {
+          display: flex;
+          white-space: nowrap; 
+          align-items: stretch;
+        }
+        
+        .testimonial-track-inner > .testimonial-card {
+          flex-shrink: 0;
+        }
+        
+        @keyframes slide-left {
+          0%   { transform: translateX(0%); }
+          100% { transform: translateX(-50%); } 
+        }
+        
+        @keyframes slide-right {
+          0%   { transform: translateX(-50%); } 
+          100% { transform: translateX(0%); }
+        }
+        
+        .testimonial-row-1 .testimonial-track-inner {
+          animation: slide-right 40s linear infinite;
+          will-change: transform;
+        }
+        
+        .testimonial-row-2 .testimonial-track-inner {
+          animation: slide-left 40s linear infinite;
+          will-change: transform;
+        }
+        
+        .testimonial-track-inner:hover {
+          animation-play-state: paused;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .testimonial-row-1 .testimonial-track-inner,
+          .testimonial-row-2 .testimonial-track-inner {
+            animation: none;
+          }
+        }
+
+      /* ====== Premium Footer Styling ====== */
+        .footer {
+          font-family: 'Inter', sans-serif;
+          color: #e5e7eb;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .footer a {
+          color: #cbd5e1;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+          color: #60a5fa;
+        }
+        
+        /* --- OUR PRESENCE --- */
+        .footer-top {
+          background: rgba(255, 255, 255, 0.04);
+          text-align: center;
+          padding: 2rem 1.5rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .footer-top h2 {
+          font-size: 1.4rem;
+          color: #ffffff;
+          margin-bottom: 1.5rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          
+        }
+        
+        .footer-presence {
+          display: flex;
+          justify-content: left;
+          flex-wrap: wrap;
+          gap: 450px;
+          padding-left: 50px;
+        }
+        
+        .footer-presence h4 {
+          color: #60a5fa;
+          margin-bottom: 0.6rem;
+        }
+        
+        .footer-presence ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-presence li {
+          margin: 0.3rem 0;
+        }
+        
+        /* --- MAIN FOOTER --- */
+        .footer-main {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+          gap: 2rem;
+          padding: 3rem 2rem;
+          align-items: start;
+        }
+        
+        .footer-logo img {
+          width: 180px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo p {
+          color: #cbd5e1;
+          font-size: 0.95rem;
+        }
+        
+        .footer-links h4,
+        .footer-legal h4,
+        .footer-contact h4 {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 1rem;
+          position: relative;
+        }
+        
+        .footer-links h4::after,
+        .footer-legal h4::after,
+        .footer-contact h4::after {
+          content: '';
+          position: absolute;
+          bottom: -0.4rem;
+          left: 0;
+          width: 40px;
+          height: 2px;
+          background: #60a5fa;
+          border-radius: 2px;
+        }
+        
+        .footer-links ul,
+        .footer-legal ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-legal li {
+          margin-bottom: 0.4rem;
+        }
+        
+        /* --- CONTACT --- */
+        .footer-contact p {
+          color: #d1d5db;
+          margin: 0.4rem 0;
+          font-size: 0.95rem;
+        }
+        
+        .footer-contact i {
+          color: #60a5fa;
+          margin-right: 0.4rem;
+        }
+        
+        .footer-social {
+          margin-top: 0.8rem;
+        }
+        
+        .footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+          width: 35px;
+          height: 35px;
+          border-radius: 8px;
+          margin-right: 0.6rem;
+          transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+          background: #60a5fa;
+          color: #0f172a;
+          transform: translateY(-4px);
+        }
+        
+        /* --- BOTTOM --- */
+        .footer-bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          text-align: center;
+          padding: 1rem;
+          font-size: 0.9rem;
+          color: #9ca3af;
+          background: rgba(0, 0, 0, 0.2);
+        }
+        
+        /* --- RESPONSIVE (MOBILE) --- */
+        @media (max-width: 768px) {
+          .footer-presence {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            padding-left: 1rem;
+            gap: 0;
+           
+          }
+        
+          .footer-main {
+            grid-template-columns: 1fr;
+            text-align: left;
+          }
+        
+          .footer-logo img {
+            margin-bottom: 1rem;
+          }
+        
+          .footer-social {
+            justify-content: flex-start;
+          }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex h-20 items-center justify-between">
+                
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0">
+                        <img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto">
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <a href="#" class="flex-shrink-0 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-5 py-2 rounded-lg text-sm font-semibold transition-colors">
+                        <span>Login/Signup</span>
+                    </a>
+                    
+                    <button id="menu-toggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i data-lucide="menu" class="w-7 h-7 text-gray-800"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <section class="relative py-20 md:py-28 text-white">
+        <div id="hero-image-wrapper" class="absolute inset-0 w-full h-full overflow-hidden">
+            
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1980&auto:format&fit=crop" 
+                 alt="Hero background 1" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-100">
+            
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 2" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
+            
+            <img src="https://images.unsplash.com/photo-1494203484021-3c454daf695d?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 3" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
+
+            <div class="absolute inset-0 w-full h-full bg-black/60"></div> 
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-6 text-center relative z-10">
+            <h1 class=" text-1l md:text-4xl font-bold text-shadow mb-6 " style="color: #fffcf2;">
+                SEARCH.CONNECT.SUCCEED
+            </h1>
+            <div class="relative w-full max-w-2xl mx-auto">
+                <input type="text" placeholder="Search for 'PG near me' or 'Hostel in Kota'" class="w-full p-4 pl-5 pr-14 rounded-lg bg-white text-gray-900 border-transparent focus:ring-4 focus:ring-cyan-300/50 focus:outline-none placeholder-gray-500 shadow-lg">
+                <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 p-2.5 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    <i data-lucide="search" class="w-5 h-5 text-white"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+    
+    <div id="mobile-menu" class="fixed top-0 right-0 w-80 h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="flex justify-end p-4 flex-shrink-0">
+            <button id="menu-close" class="p-2">
+                <i data-lucide="x" class="w-6 h-6 text-gray-700"></i>
+            </button>
+        </div>
+
+        <div class="flex justify-between items-center px-6 py-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i data-lucide="users" class="w-6 h-6 text-gray-600"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-semibold text-gray-800">Hi Guest User 👋</span>
+                    <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Login/Signup with RoomHy</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 relative overflow-hidden">
+                <img src="images/post.png" alt="Illustartion of people with house" class="absolute right-0 bottom-0 opacity-80 w-32 h-auto" style="pointer-events: none;">
+                <p class="font-semibold text-gray-800 mb-3 relative z-10">Looking to Sell/Rent your Property?</p>
+                <a href="#register-property" class="block text-center w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors relative z-10" style="width: 150px;">
+                    Post Property for Free
+                </a>
+            </div>
+        </div>
+
+        <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+            <a href="ourproperty.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <span>Our Properties</span>
+            </a>
+            <a href="#why-roomhy" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="info" class="w-5 h-5 text-yellow-600"></i>
+                </div>
+                <span>About Us</span>
+            </a>
+            <a href="#contact" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="phone" class="w-5 h-5 text-cyan-600"></i>
+                </div>
+                <span>Contact Us</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t flex-shrink-0">
+            </div>
+    </div>
+    <section id="top-cities-categories" class="container mx-auto px-4 sm:px-6 -mt-8 relative z-10">
+        <div class="bg-white py-4 shadow-lg rounded-2xl"> 
+            <h2 class="sr-only">Top Cities</h2>
+            <div id="cities-category-slider" class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth horizontal-slider px-4">
+                
+                <a href="#" class="city-filter group flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2" data-city="Kota">
+                    <div class="w-16 h-16 rounded-full relative overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="images/OIP.webp" alt="Photo of Kota" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 z-20 w-full h-full bg-white flex items-center justify-center transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                            <i data-lucide="university" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">Kota</h3>
+                </a>
+
+                <a href="#" class="city-filter group flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2" data-city="Gurugram">
+                     <div class="w-16 h-16 rounded-full relative overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1594923485669-81538c22d7c0?q=80&w=1974&auto:format&fit=crop" alt="Photo of Gurugram" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 z-20 w-full h-full bg-white flex items-center justify-center transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                            <i data-lucide="building-2" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">Gurugram</h3>
+                </a>
+                
+                <a href="#" class="city-filter group flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2" data-city="Mumbai">
+                    <div class="w-16 h-16 rounded-full relative overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1566552881560-058921e3c05c?q=80&w=1974&auto:format&fit=crop" alt="Photo of Mumbai" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 z-20 w-full h-full bg-white flex items-center justify-center transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                            <i data-lucide="landmark" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">Mumbai</h3>
+                </a>
+
+                <a href="#" class="city-filter group flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2" data-city="Bangalore">
+                    <div class="w-16 h-16 rounded-full relative overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1593717191400-84f38cf9158a?q=80&w=2070&auto:format&fit=crop" alt="Photo of Bangalore" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 z-20 w-full h-full bg-white flex items-center justify-center transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                            <i data-lucide="palace" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">Bangalore</h3>
+                </a>
+
+                <a href="#" class="city-filter group flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2" data-city="Delhi">
+                    <div class="w-16 h-16 rounded-full relative overflow-hidden border border-gray-200 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1588882098240-e14b51c1f2ea?q=80&w=2070&auto:format&fit=crop" alt="Photo of Delhi" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 z-20 w-full h-full bg-white flex items-center justify-center transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                            <i data-lucide="arch" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">Delhi</h3>
+                </a>
+                
+                <a href="#" class="flex flex-col items-center justify-start text-center flex-shrink-0 w-20 snap-start space-y-2">
+                    <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border border-gray-200">
+                        <i data-lucide="arrow-right" class="w-6 h-6 text-gray-700"></i>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-800 leading-tight">View All</h3>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-16">
+        <section id="offerings" class="light-card rounded-2xl p-6">
+            <h2 class="text-2xl font-bold mb-6 text-gray-900">Our offering</h2>
+            <div class="relative -m-2">
+                <button id="offer-prev" class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 sm:block"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <div id="offerings-slider" class="flex gap-6 overflow-x-auto pb-2 pt-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider " style="padding-left:100px;">
+                    <a href="#" class="group block flex-shrink-0 snap-start w-52 sm:w-50 offering-card-item">
+                        <div class="relative rounded-2xl overflow-hidden h-40 sm:h-45 offering-card transition-transform duration-300 border border-gray-100">
+                            <img src="images/angels-hostel-taipei-taiwan-9.jpeg" class="w-100px h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Hostel">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent overlay"></div>
+                            <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white">Hostel</h3>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-52 sm:w-50 offering-card-item">
+                        <div class="relative rounded-2xl overflow-hidden h-40 sm:h-45 offering-card transition-transform duration-300 border border-gray-100">
+                            <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=1932&auto:format&fit=crop" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="PG">
+                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent overlay"></div>
+                            <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white">PG</h3>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-52 sm:w-50 offering-card-item">
+                        <div class="relative rounded-2xl overflow-hidden h-40 sm:h-40 offering-card transition-transform duration-300 border border-gray-100">
+                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070&auto:format&fit=crop" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Apartments">
+                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent overlay"></div>
+                            <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white">Apartments</h3>
+                        </div>
+                    </a>
+                    <a href="#" class="group block flex-shrink-0 snap-start w-60 sm:w-72 offering-card-item">
+                        <div class="relative rounded-2xl overflow-hidden h-40 sm:h-40 offering-card transition-transform duration-300 border border-gray-100">
+                            <img src="images/angels-hostel-taipei-taiwan-9.jpeg" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Private Rooms">
+                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent overlay"></div>
+                            <h3 class="absolute bottom-6 left-6 text-2xl font-bold text-white">Private Rooms</h3>
+                        </div>
+                    </a>
+                </div>
+                <button id="offer-next" class="absolute -right-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700  sm:block"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+
+        <section id="why-roomhy" class="scroll-mt-20 light-card rounded-2xl p-6 md:p-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+                 <div class="text-left lg:order-2">
+                     <div class="animate-slide-in text-center lg:text-left">
+                         <h2 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600">Why Roomhy?</h2>
+                     </div>
+                      <div class="hidden lg:block animate-slide-in text-left mt-8">
+                         <p class="text-gray-600 mb-6 text-lg">Roomhy was built by students, for students. We experienced the chaos of finding a reliable place to live and knew there had to be a better way.</p>
+                         <p class="text-gray-600">We're more than a platform; we're your first friend in a new city, dedicated to helping you find a space where you can thrive.</p>
+                     </div>
+                </div>
+                <div class="w-full max-w-3xl mx-auto grid grid-cols-2 grid-rows-2 gap-4 mt-8 lg:mt-0 animate-slide-in lg:order-1" style="animation-delay: 0.2s;">
+                    <div class="row-span-2 col-span-1">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1887&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Modern student accommodation building">
+                    </div>
+                    <div class="col-span-1">
+                        <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=2070&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Student common room with yellow chairs">
+                    </div>
+                    <div class="col-span-1">
+                         <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2070&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Bright and modern student room hallway">
+                    </div>
+                </div>
+                <div class="lg:hidden animate-slide-in text-left mt-8">
+                    <p class="text-gray-600 mb-6 text-lg">Roomhy was built by students, for students. We experienced the chaos of finding a reliable place to live and knew there had to be a better way.</p>
+                    <p class="text-gray-600">We're more than a platform; we're your first friend in a new city, dedicated to helping you find a space where you can thrive.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="top-spaces" class="light-card rounded-2xl p-6">
+            <h2 id="top-spaces-title" class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Top Spaces in Indore</h2>
+            <div class="relative -m-2"> <button id="spaces-prev" class="hidden -left-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 sm:block lg:hidden"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                
+                <div id="spaces-slider" class="flex gap-6 overflow-x-auto pb-2 pt-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:p-0 lg:m-0">
+                    </div>
+                
+                <button id="spaces-next" class="hidden absolute -right-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 sm:block lg:hidden"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+        
+        <section id="how-it-works" class="relative overflow-hidden py-12">
+            <div class="container mx-auto px-4 sm:px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">How It Works</h2>
+                    <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-16 lg:mb-32">Find your perfect student home in three simple steps.</p>
+                </div>
+    
+                <div class="hidden lg:block absolute top-0 left-0 w-full h-full -z-10">
+                    <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="none">
+                        <path d="M 850 150 C 600 150, 600 400, 350 400" stroke="#E5E7EB" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+                        <path d="M 350 400 C 100 400, 100 650, 850 650" stroke="#E5E7EB" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+                    </svg>
+                </div>
+                
+                <div class="space-y-20 lg:space-y-24 relative">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center animate-slide-in relative">
+                        <div class="lg:hidden absolute top-full left-1/2 w-px h-20 -translate-x-1/2">
+                            <svg width="2" height="100%" class="text-gray-300">
+                                <line x1="1" y1="0" x2="1" y2="100%" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
+                            </svg>
+                        </div>
+                         <div class="w-full max-w-lg mx-auto lg:mx-0">
+                             <div class="grid grid-cols-2 grid-rows-2 gap-4">
+                                <div class="row-span-2 col-span-1">
+                                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Students searching on laptop">
+                                </div>
+                                <div class="col-span-1">
+                                    <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=2070&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Modern interior">
+                                </div>
+                                <div class="col-span-1">
+                                     <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto:format&fit=crop" class="h-full w-full object-cover rounded-2xl shadow-lg" alt="Bright living room">
+                                </div>
+                            </div>
+                        </div>
+                         <div class="text-center lg:text-left">
+                            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Step 1</span>
+                            <h3 class="text-3xl font-bold my-4 text-gray-900">Search & Discover</h3>
+                            <p class="text-gray-500 text-lg">Use our smart filters to find verified properties near your campus. Compare prices, amenities, and read genuine reviews.</p>
+                        </div>
+                    </div>
+    
+                    <div class="grid lg:grid-cols-2 gap-12 items-center animate-slide-in relative">
+                         <div class="lg:hidden absolute top-full left-1/2 w-px h-20 -translate-x-1/2">
+                            <svg width="2" height="100%" class="text-gray-300">
+                                <line x1="1" y1="0" x2="1" y2="100%" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
+                            </svg>
+                        </div>
+                        <div class="w-full max-w-lg mx-auto lg:mx-0 lg:order-2">
+                            <div class="grid grid-cols-2 gap-4">
+                                <img src="images/angels-hostel-taipei-taiwan-9.jpeg" alt="Online booking confirmation" class="rounded-2xl shadow-xl w-full h-full object-cover col-span-2">
+                                <img src="images/Depositphotos_39343437_xl-2015-scaled.jpg" alt="Student smiling" class="rounded-2xl shadow-xl w-full h-full object-cover">
+                                <img src="images/CIT-139-1024x678.jpg" alt="Close up of online payment" class="rounded-2xl shadow-xl w-full h-full object-cover">
+                            </div>
+                        </div>
+                         <div class="lg:order-1 text-center lg:text-left">
+                            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Step 2</span>
+                            <h3 class="text-3xl font-bold my-4 text-gray-900">Book Instantly</h3>
+                            <p class="text-gray-500 text-lg">Found the one? Select your room, pay a small token amount, and book it online hassle-free. Your new home is just a few clicks away.</p>
+                        </div>
+                    </div>
+    
+                    <div class="grid lg:grid-cols-2 gap-12 items-center animate-slide-in">
+                         <div class="w-full max-w-lg mx-auto lg:mx-0 lg:order-2">
+                            <img src="images/istockphoto-1208347853-612x612.jpg" alt="Student moving into a new room" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                        </div>
+                         <div class="text-center lg:text-left lg:order-1">
+                            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Step 3</span>
+                            <h3 class="text-3xl font-bold my-4 text-gray-900">Move In</h3>
+                            <p class="text-gray-500 text-lg">Complete the paperwork, pack your bags, and get ready for the best chapter of your life. Welcome to your new home!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="top-spaces-kota" class="light-card rounded-2xl p-6">
+            <h2 id="top-spaces-title-kota" class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Top Spaces in Kota</h2>
+            <div class="relative -m-2"> <button id="spaces-prev-kota" class="hidden absolute -left-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 sm:block lg:hidden"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                
+                <div id="spaces-slider-kota" class=" flex gap-6 overflow-x-auto pb-2 pt-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:p-0 lg:m-0">
+                    </div>
+                
+                <button id="spaces-next-kota" class="hidden absolute -right-2 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 sm:block lg:hidden"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+        <section id="why-choose-us">
+            <div class="text-center"><h2 class="text-3xl md:text-4xl font-bold mb-12 text-gray-900">Why Students Choose Us</h2></div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="light-card p-6 rounded-xl flex items-start space-x-4"><div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/30"><i data-lucide="wallet" class="w-6 h-6"></i></div><div><h3 class="text-lg font-semibold text-gray-900">Zero Brokerage</h3><p class="text-gray-500 mt-1">Save your money for what matters. We connect you directly with property owners, with no hidden fees.</p></div></div>
+                <div class="light-card p-6 rounded-xl flex items-start space-x-4"><div class="bg-gradient-to-br from-orange-500 to-amber-600 text-white w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange-500/30"><i data-lucide="sofa" class="w-6 h-6"></i></div><div><h3 class="text-lg font-semibold text-gray-900">Fully Furnished</h3><p class="text-gray-500 mt-1">Move in with just your suitcase. Our properties come with all the essential furniture and amenities.</p></div></div>
+                <div class="light-card p-6 rounded-xl flex items-start space-x-4"><div class="bg-gradient-to-br from-blue-500 to-cyan-600 text-white w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/30"><i data-lucide="heart-handshake" class="w-6 h-6"></i></div><div><h3 class="text-lg font-semibold text-gray-900">24/7 Support</h3><p class="text-gray-500 mt-1">From booking to move-out, our dedicated support team is always here to help you.</p></div></div>
+            </div>
+        </section>
+        <section id="guarantee">
+            <div class="light-card rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div><h3 class="text-3xl md:text-4xl font-bold text-cyan-600">50K+</h3><p class="text-gray-500 mt-2">Happy Students</p></div>
+                <div><h3 class="text-3xl md:text-4xl font-bold text-blue-600">10K+</h3><p class="text-gray-500 mt-2">Verified Properties</p></div>
+                <div><h3 class="text-3xl md:text-4xl font-bold text-sky-600">200+</h3><p class="text-gray-500 mt-2">Cities Served</p></div>
+                <div><h3 class="text-3xl md:text-4xl font-bold text-teal-600">100%</h3><p class="text-gray-500 mt-2">Brokerage Free</p></div>
+            </div>
+        </section>
+        
+        <section id="featured" class="scroll-mt-20 light-card rounded-2xl p-6 md:p-8">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 relative inline-block">
+                    Trending Properties
+                    <span class="block w-16 h-1 bg-green-500 mx-auto mt-2"></span>
+                </h2>
+                <p class="text-gray-500 max-w-2xl mx-auto mb-8">Check out the properties that are currently trending in your city.</p>
+            </div>
+            
+            <div class="relative">
+                <button id="featured-prev" class="absolute -left-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                
+                <div id="featured-slider" class="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scroll-smooth horizontal-slider lg:grid lg:grid-cols-3 lg:gap-8 lg:p-0 lg:m-0">
+                    </div>
+                
+                <button id="featured-next" class="absolute -right-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 text-gray-700 hidden sm:block lg:hidden"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+            </div>
+        </section>
+
+        <section id="rent-smarter" class="light-card rounded-2xl p-6 md:p-8 overflow-hidden">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <div class="animate-slide-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Rent Smarter. Live Better. <br class="hidden lg:block"> <span class="text-blue-600">With Roomhy</span></h2>
+                    
+                    <div class="space-y-8 mt-10">
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 bg-blue-100 text-blue-600 p-3 rounded-lg shadow-sm">
+                                <i data-lucide="badge-percent" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-1">Zero Brokerage Always</h3>
+                                <p class="text-gray-500 leading-relaxed">Tired of paying brokers just to see a room? With Roomhy, you connect directly with verified property owners. No middlemen, no extra charges — just a clean, commission-free experience.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 bg-green-100 text-green-600 p-3 rounded-lg shadow-sm">
+                                <i data-lucide="gavel" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-1">Only Pay What You Bid</h3>
+                                <p class="text-gray-500 leading-relaxed">No fixed pricing. No pressure. Set your own budget and place a live bid — the owner picks the best offer. It’s fast, fair, and puts you in control from the start.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 bg-purple-100 text-purple-600 p-3 rounded-lg shadow-sm">
+                                <i data-lucide="user-check" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-1">Rooms That Match Your Vibe & Budget</h3>
+                                <p class="text-gray-500 leading-relaxed">Whether you want a solo PG, a shared space with friends, or a budget hostel near college — Roomhy has it all. Search by location, amenities, and real-time availability to find your perfect stay.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="animate-slide-in" style="animation-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto:format&fit=crop" 
+                         alt="Happy students" 
+                         class="w-full h-full object-cover rounded-2xl shadow-lg"
+                         style="max-height: 500px;">
+                </div>
+                
+            </div>
+        </section>
+        <section id="register-property" class="cta-section rounded-2xl text-white p-12 text-center flex flex-col items-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Have a Property to Rent Out?</h2>
+            <p class="text-lg text-gray-200 max-w-2xl mx-auto mb-8">Join our network of trusted property owners and reach thousands of students looking for a home. Listing is free and easy!</p>
+            <a href="#" class="glow-button text-white px-8 py-3 rounded-lg font-semibold text-lg" style="background: linear-gradient(90deg, #06b6d4, #3b82f6); box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);">Register Now</a>
+        </section>
+
+        <section id="testimonials" class="overflow-hidden py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Trusted by 10,000+ Students</h2>
+            </div>
+            
+            <div class="testimonial-carousel testimonial-row-1 mb-8">
+                <div class="testimonial-track">
+                    <div class="testimonial-track-inner" id="testimonial-track-1">
+                        </div>
+                </div>
+            </div>
+
+            <div class="testimonial-carousel testimonial-row-2">
+                <div class="testimonial-track">
+                    <div class="testimonial-track-inner" id="testimonial-track-2">
+                        </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="scroll-mt-20">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Get in Touch</h2>
+                    <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-8">Have questions or need assistance? Fill out the form below, and we'll get back to you shortly.</p>
+                </div>
+                <div class="light-card p-8 md:p-12 rounded-2xl">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="name" name="name" class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Your Name">
+                            </div>
+                             <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" name="email" class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="you@example.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="4" class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button type="submit" class="glow-button text-white px-8 py-3 rounded-lg font-semibold text-lg" style="background: linear-gradient(90deg, #06b6d4, #3b82f6); box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <a href="#" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+   
+    <footer class="footer">
+      <div class="footer-top">
+        <h2>Our Presence</h2>
+        <div class="footer-presence">
+          <div>
+            <h4>Kota</h4>
+            <ul>
+              <li><a href="#">Hostels in Kota</a></li>
+              <li><a href="#">Apartments in Kota</a></li>
+              <li><a href="#">PG in Kota</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Indore</h4>
+            <ul>
+              <li><a href="#">Hostels in Indore</a></li>
+              <li><a href="#">Apartments in Indore</a></li>
+              <li><a href="#">PG in Indore</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Ahmedabad</h4>
+            <ul>
+              <li><a href="#">Hostels in Ahmedabad</a></li>
+              <li><a href="#">Apartments in Ahmedabad</a></li>
+              <li><a href="#">PG in Ahmedabad</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="https://roomhy.com/assets/logo.png" alt="Roomhy Logo">
+          <p>Discover Your Next Home, Together.</p>
+        </div>
+    
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#why-roomhy">About Us</a></li>
+            <li><a href="ourproperty.html">Our Properties</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-legal">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="cancellation-policy.html">Cancellation Policy</a></li>
+            <li><a href="refund-policy.html">Refund Policy</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p><i class="fas fa-phone"></i> +91 99830 05030</p>
+          <p><i class="fas fa-envelope"></i> hello@roomhy.com</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    
+      <div class="footer-bottom">
+        <p>© 2025 <strong>Roomhy</strong>. All Rights Reserved.</p>
+      </div>
+    </footer>
+    </body>
+    <script>
+        lucide.createIcons();
+        
+        /*
+        ============================================================
+        JavaScript for City Filter
+        (No changes needed here, it works with the new HTML)
+        ============================================================
+        */
+        
+        // ======================================================
+        // START: JAVASCRIPT PROPERTY DATA
+        // ======================================================
+        const propertyData = {
+            "Indore": [
+                { 
+                    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Urban Stay PG", 
+                    location: "Chandan Nagar, Indore", 
+                    price: "7,999", 
+                    oldPrice: "11,999",
+                    facilities: ['wifi', 'wind', 'tv'],
+                    moreFacilities: 11
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Skyline Heights", 
+                    location: "Chandan Nagar, Indore", 
+                    price: "12,000", 
+                    oldPrice: "14,500",
+                    facilities: ['wifi', 'wind', 'utensils'],
+                    moreFacilities: 19
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto:format&fit=crop", 
+                    title: "Student Hostel", 
+                    location: "Landmark, Indore", 
+                    price: "6,000", 
+                    oldPrice: "6,500",
+                    facilities: ['wifi', 'tv', 'utensils'],
+                    moreFacilities: 0 // Set to 0 to hide the "+X" badge
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Cozy Backpackers Hostel", 
+                    location: "Landmark, Indore",
+                    price: "4,500", 
+                    oldPrice: "5,999",
+                    facilities: ['wifi', 'wind', 'tv'],
+                    moreFacilities: 13
+                }
+            ],
+            "Kota": [
+        { 
+                    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Urban Stay PG", 
+                    location: "Chandan Nagar, Indore", 
+                    price: "7,999", 
+                    oldPrice: "11,999",
+                    facilities: ['wifi', 'wind', 'tv'],
+                    moreFacilities: 11
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Skyline Heights", 
+                    location: "Chandan Nagar, Indore", 
+                    price: "12,000", 
+                    oldPrice: "14,500",
+                    facilities: ['wifi', 'wind', 'utensils'],
+                    moreFacilities: 19
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto:format&fit=crop", 
+                    title: "Student Hostel", 
+                    location: "Landmark, Indore", 
+                    price: "6,000", 
+                    oldPrice: "6,500",
+                    facilities: ['wifi', 'tv', 'utensils'],
+                    moreFacilities: 0 // Set to 0 to hide the "+X" badge
+                },
+                { 
+                    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto:format&fit=crop", 
+                    title: "Cozy Backpackers Hostel", 
+                    location: "Landmark, Indore",
+                    price: "4,500", 
+                    oldPrice: "5,999",
+                    facilities: ['wifi', 'wind', 'tv'],
+                    moreFacilities: 13
+                }       
+        ],
+            "Gurugram": [
+                { img: "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?q=80&w=2070&auto:format&fit=crop", title: "Cyber Hub Co-Living", location: "DLF Phase 3, Gurugram", price: "15,000", oldPrice: "16,000", facilities: ['wifi', 'wind', 'dumbbell'], moreFacilities: 8 },
+                { img: "https://images.unsplash.com/photo-1613553483054-c3b6c5c84c6c?q=80&w=1974&auto:format&fit=crop", title: "Sector 44 Student PG", location: "Sector 44, Gurugram", price: "11,000", oldPrice: null, facilities: ['wifi', 'tv'], moreFacilities: 4 }
+            ],
+            "Mumbai": [
+                { img: "https://images.unsplash.com/photo-1560185007-c5ca9d2c01f8?q=80&w=1974&auto:format&fit=crop", title: "Vile Parle Student Stay", location: "Vile Parle, Mumbai", price: "20,000", oldPrice: "21,500", facilities: ['wifi', 'wind'], moreFacilities: 3 },
+                { img: "https://images.unsplash.com/photo-1574873215043-4411946153bc?q=80&w=2071&auto:format&fit=crop", title: "Andheri West Hostel", location: "Andheri West, Mumbai", price: "18,500", oldPrice: null, facilities: ['wifi'], moreFacilities: 0 },
+                { img: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2070&auto:format&fit=crop", title: "Powai Lake View PG", location: "Powai, Mumbai", price: "22,000", oldPrice: "24,000", facilities: ['wifi', 'wind', 'tv'], moreFacilities: 7 }
+            ],
+            "Bangalore": [
+                { img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1916&auto:format&fit=crop", title: "The Scholar's Loft", location: "Koramangala, BLR", price: "16,500", oldPrice: "17,000", facilities: ['wifi', 'wind', 'tv'], moreFacilities: 10 },
+                { img: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto:format&fit=crop", title: "Electronic City Hub", location: "Electronic City, BLR", price: "14,000", oldPrice: null, facilities: ['wifi', 'tv'], moreFacilities: 4 }
+            ],
+            "Delhi": [
+                { img: "https://images.unsplash.com/photo-1567016432779-1fee749a1532?q=80&w=1974&auto:format&fit=crop", title: "Campus Corner", location: "North Campus, Delhi", price: "13,000", oldPrice: "14,000", facilities: ['wifi', 'wind'], moreFacilities: 6 },
+                { img: "https://images.unsplash.com/photo-1600607687930-1e3c3b9b4a4c?q=80&w=1974&auto:format&fit=crop", title: "South Ex Luxury Stay", location: "South Extension, Delhi", price: "17,000", oldPrice: "18,500", facilities: ['wifi', 'wind', 'tv'], moreFacilities: 9 }
+            ]
+        };
+        // ======================================================
+        // END: JAVASCRIPT PROPERTY DATA
+        // ======================================================
+
+        // ======================================================
+        // START: JAVASCRIPT TESTIMONIAL DATA
+        // ======================================================
+        const testimonialData = [
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+                name: "Priya Sharma",
+                location: "Engineering Student, Christ University",
+                text: "Roomhy made finding a PG in Bangalore so easy! The place was exactly as shown online. Totally trustworthy and a lifsaver for a first-timer like me."
+            },
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704a",
+                name: "Rohan Mehra",
+                location: "Medical Student, AIIMS",
+                text: "I was worried about finding a good hostel in Delhi. The verified listings and clear pricing on Roomhy gave me confidence. Found a great place near my campus."
+            },
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704b",
+                name: "Anjali Singh",
+                location: "Design Student, NIFT",
+                text: "The customer support is amazing! They helped me with all my queries before booking. The apartment I found is perfect and exactly what I needed."
+            },
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704c",
+                name: "Vikram Kumar",
+                location: "IIT Student, Mumbai",
+                text: "Finding a place in Mumbai within budget seemed impossible. Roomhy's map search and filter options were super helpful. Got a shared flat with great roommates."
+            },
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704e",
+                name: "Sneha Patel",
+                location: "Law Student, Pune",
+                text: "The zero brokerage is a huge plus. Saved a lot of money which I could use for my deposits. The platform is very transparent and easy to use."
+            },
+            {
+                img: "https://i.pravatar.cc/150?u=a042581f4e29026704f",
+                name: "Arjun Reddy",
+                location: "MBA Student, ISB",
+                text: "As an international student, the process was seamless. Verified properties gave me peace of mind. Booked my studio apartment from my home country."
+            }
+        ];
+        // ======================================================
+        // END: JAVASCRIPT TESTIMONIAL DATA
+        // ======================================================
+
+        // ======================================================
+        // START: `updateTopSpaces` FUNCTION (FOR INDORE)
+        // ======================================================
+        function updateTopSpaces(cityName) {
+            const spacesTitle = document.getElementById('top-spaces-title');
+            const spacesSlider = document.querySelector('#top-spaces #spaces-slider');
+            
+            if (!spacesTitle || !spacesSlider) {
+                console.error("Could not find 'top-spaces-title' or 'spaces-slider'.");
+                return;
+            }
+
+            const spaces = propertyData[cityName] || propertyData["Indore"]; 
+            
+            spacesTitle.innerText = `Top Spaces in ${cityName}`;
+            spacesSlider.innerHTML = '';
+            
+            if (!spaces || spaces.length === 0) {
+                spacesSlider.innerHTML = '<p class="text-gray-500 px-4">No properties found for this city.</p>';
+                return;
+            }
+            
+            let newSlidesHTML = '';
+            spaces.forEach(space => {
+                let facilitiesHTML = '';
+                if (space.facilities && space.facilities.length > 0) {
+                    facilitiesHTML = space.facilities.map(icon => 
+                        `<i data-lucide="${icon}" class="w-4 h-4"></i>`
+                    ).join('');
+                }
+                
+                let moreFacilitiesHTML = '';
+                if (space.moreFacilities && space.moreFacilities > 0) {
+                    moreFacilitiesHTML = `<span class="text-xs font-bold text-blue-600 bg-blue-100 py-0.5 px-1.5 rounded">+${space.moreFacilities}</span>`;
+                }
+
+                let oldPriceHTML = '';
+                if (space.oldPrice) {
+                    oldPriceHTML = `<p class="text-xs text-gray-500 line-through">₹${space.oldPrice}</p>`;
+                }
+
+                newSlidesHTML += `
+                    <div class="group flex-shrink-0 snap-start w-80 lg:w-full">
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full">
+                            <div class="relative">
+                                <img src="${space.img}" alt="${space.title}" class="w-full h-48 object-cover">
+                                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5">
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-90"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 flex flex-col flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold text-lg text-gray-900">${space.title}</h3>
+                                    <div class="text-right flex-shrink-0 ml-2">
+                                        <p class="font-bold text-blue-600 text-lg">₹${space.price}</p>
+                                        ${oldPriceHTML}
+                                        <p class="text-xs text-gray-500">onwards</p>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 text-sm mt-1">${space.location}</p>
+
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="text-xs font-semibold text-gray-500 mb-2">Key Facilities</h4>
+                                    <div class="flex items-center space-x-3 text-gray-600">
+                                        ${facilitiesHTML}
+                                        ${moreFacilitiesHTML}
+                                    </div>
+                                    </div>
+
+                                <a href="#" class="block w-full text-center bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors mt-4">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            spacesSlider.innerHTML = newSlidesHTML;
+            lucide.createIcons();
+        }
+        // ======================================================
+        // END: `updateTopSpaces` FUNCTION
+        // ======================================================
+
+        // ======================================================
+        // START: `updateTopSpacesKota` FUNCTION (FOR KOTA)
+        // ======================================================
+        function updateTopSpacesKota(cityName) {
+            const spacesTitle = document.getElementById('top-spaces-title-kota');
+            const spacesSlider = document.querySelector('#top-spaces-kota #spaces-slider-kota');
+            
+            if (!spacesTitle || !spacesSlider) {
+                console.error("Could not find 'top-spaces-title-kota' or 'spaces-slider-kota'.");
+                return;
+            }
+
+            const spaces = propertyData[cityName] || propertyData["Indore"]; 
+            
+            spacesTitle.innerText = `Top Spaces in ${cityName}`;
+            spacesSlider.innerHTML = '';
+            
+            if (!spaces || spaces.length === 0) {
+                spacesSlider.innerHTML = '<p class="text-gray-500 px-4">No properties found for this city.</p>';
+                return;
+            }
+            
+            let newSlidesHTML = '';
+            spaces.forEach(space => {
+                let facilitiesHTML = '';
+                if (space.facilities && space.facilities.length > 0) {
+                    facilitiesHTML = space.facilities.map(icon => 
+                        `<i data-lucide="${icon}" class="w-4 h-4"></i>`
+                    ).join('');
+                }
+                
+                let moreFacilitiesHTML = '';
+                if (space.moreFacilities && space.moreFacilities > 0) {
+                    moreFacilitiesHTML = `<span class="text-xs font-bold text-blue-600 bg-blue-100 py-0.5 px-1.5 rounded">+${space.moreFacilities}</span>`;
+                }
+
+                let oldPriceHTML = '';
+                if (space.oldPrice) {
+                    oldPriceHTML = `<p class="text-xs text-gray-500 line-through">₹${space.oldPrice}</p>`;
+                }
+
+                newSlidesHTML += `
+                    <div class="group flex-shrink-0 snap-start w-80 lg:w-full">
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full">
+                            <div class="relative">
+                                <img src="${space.img}" alt="${space.title}" class="w-full h-48 object-cover">
+                                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5">
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-90"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 flex flex-col flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold text-lg text-gray-900">${space.title}</h3>
+                                    <div class="text-right flex-shrink-0 ml-2">
+                                        <p class="font-bold text-blue-600 text-lg">₹${space.price}</p>
+                                        ${oldPriceHTML}
+                                        <p class="text-xs text-gray-500">onwards</p>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 text-sm mt-1">${space.location}</p>
+
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="text-xs font-semibold text-gray-500 mb-2">Key Facilities</h4>
+                                    <div class="flex items-center space-x-3 text-gray-600">
+                                        ${facilitiesHTML}
+                                        ${moreFacilitiesHTML}
+                                    </div>
+                                    </div>
+
+                                <a href="#" class="block w-full text-center bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors mt-4">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            spacesSlider.innerHTML = newSlidesHTML;
+            lucide.createIcons();
+        }
+        // ======================================================
+        // END: `updateTopSpacesKota` FUNCTION
+        // ======================================================
+
+        // ======================================================
+        // START: `updateFeaturedProperties` FUNCTION
+        // ======================================================
+        function updateFeaturedProperties() {
+            const spacesSlider = document.querySelector('#featured #featured-slider');
+            
+            if (!spacesSlider) {
+                console.error("Could not find '#featured-slider'.");
+                return;
+            }
+
+            const spaces = propertyData["Indore"]; 
+            
+            spacesSlider.innerHTML = '';
+            
+            if (!spaces || spaces.length === 0) {
+                spacesSlider.innerHTML = '<p class="text-gray-500 px-4">No properties found.</p>';
+                return;
+            }
+            
+            let newSlidesHTML = '';
+            spaces.forEach(space => {
+                let facilitiesHTML = '';
+                if (space.facilities && space.facilities.length > 0) {
+                    facilitiesHTML = space.facilities.map(icon => 
+                        `<i data-lucide="${icon}" class="w-4 h-4"></i>`
+                    ).join('');
+                }
+                
+                let moreFacilitiesHTML = '';
+                if (space.moreFacilities && space.moreFacilities > 0) {
+                    moreFacilitiesHTML = `<span class_name="text-xs font-bold text-blue-600">+${space.moreFacilities} More</span>`;
+                }
+
+                let oldPriceHTML = '';
+                if (space.oldPrice) {
+                    oldPriceHTML = `<p class="text-xs text-gray-500 line-through">₹${space.oldPrice}</p>`;
+                }
+                
+                const priceColor = space.oldPrice ? 'text-green-600' : 'text-gray-900';
+
+                newSlidesHTML += `
+                    <div class="group flex-shrink-0 snap-start w-80 lg:w-full">
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full">
+                            
+                            <div class="relative">
+                                <img src="${space.img}" alt="${space.title}" class="w-full h-48 object-cover">
+                                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5">
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-90"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                    <span class="w-2 h-2 bg-white rounded-full opacity-50"></span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 flex flex-col flex-grow">
+                                
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-bold text-lg text-gray-900">${space.title}</h3>
+                                        <p class="text-gray-600 text-sm mt-1">${space.location}</p>
+                                    </div>
+                                    <div class="text-right flex-shrink-0 ml-2">
+                                        <p class="font-bold ${priceColor} text-lg">₹${space.price}</p>
+                                        <p class="text-xs text-gray-500">onwards</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="text-xs font-semibold text-gray-500 mb-2">Key Facilities</h4>
+                                    <div class="flex items-center space-x-3 text-gray-600">
+                                        ${facilitiesHTML}
+                                        ${moreFacilitiesHTML}
+                                    </div>
+                                </div>
+
+                                <a href="#" class="block w-full text-center bg-red-600 text-white font-medium py-2 px-4 rounded-lg text-sm hover:bg-red-700 transition-colors mt-auto pt-2.5">
+                                    Contact Owner
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            spacesSlider.innerHTML = newSlidesHTML;
+            lucide.createIcons();
+        }
+        // ======================================================
+        // END: `updateFeaturedProperties` FUNCTION
+        // ======================================================
+
+        // ======================================================
+        // START: `buildTestimonialRow` FUNCTION
+        // ======================================================
+        function buildTestimonialRow(data, containerId) {
+            const track = document.getElementById(containerId);
+            if (!track) return;
+
+            let cardsHTML = '';
+            data.forEach(item => {
+                cardsHTML += `
+                    <div class="testimonial-card">
+                        <div class="flex items-center mb-4">
+                            <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-bold text-gray-900">${item.name}</h4>
+                                <p class="text-sm text-gray-500">${item.location}</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-3">
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        </div>
+                        <p class="text-gray-600 text-base">${item.text}</p>
+                    </div>
+                `;
+            });
+            
+            // Duplicate the cards to create a seamless loop
+            track.innerHTML = cardsHTML + cardsHTML;
+        }
+        // ======================================================
+        // END: `buildTestimonialRow` FUNCTION
+        // ======================================================
+
+
+        document.querySelectorAll('.city-filter').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const city = this.dataset.city;
+                if (city) {
+                    updateTopSpaces(city);
+                    const topSpacesSection = document.getElementById('top-spaces');
+                    if (topSpacesSection) {
+                        topSpacesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTopSpaces('Indore');
+            updateTopSpacesKota('Kota');
+            updateFeaturedProperties();
+
+            // Build testimonial rows
+            buildTestimonialRow(testimonialData.slice(0, 3), 'testimonial-track-1');
+            buildTestimonialRow(testimonialData.slice(3, 6), 'testimonial-track-2');
+            
+            // Re-run lucide.createIcons() after dynamic content
+            lucide.createIcons();
+        });
+
+        /*
+        ============================================================
+        JavaScript for Mobile Side Menu
+        ============================================================
+        */
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        if (menuToggle && mobileMenu && menuClose && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-full');
+                menuOverlay.classList.remove('hidden');
+            });
+
+            const closeMenu = () => {
+                mobileMenu.classList.add('translate-x-full');
+                menuOverlay.classList.add('hidden');
+            };
+
+            menuClose.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+
+            // Updated to close menu on anchor link clicks too
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Only close if it's an anchor link on the same page
+                    if (link.href.includes('#')) {
+                         // Need a small delay to allow navigation to happen
+                        setTimeout(closeMenu, 100);
+                    }
+                    // For links to other pages (like ourproperty.html), 
+                    // it will close automatically, but we call it anyway
+                    closeMenu();
+                });
+            });
+        }
+        
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section > div:not(.relative):not(#hero-content-wrapper), section > h2').forEach(el => {
+            if (!el.classList.contains('animate-slide-in')) {
+                 el.style.opacity = '0';
+                 observer.observe(el);
+            }
+        });
+
+
+        // Intersection Observer for offering cards
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${index * 100}ms`;
+                    entry.target.classList.add('card-animate');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.offering-card-item').forEach(card => {
+            cardObserver.observe(card);
+        });
+
+        // Offerings Slider
+        const offerSlider = document.getElementById('offerings-slider');
+        const offerPrev = document.getElementById('offer-prev');
+        const offerNext = document.getElementById('offer-next');
+        if(offerSlider && offerPrev && offerNext) {
+            const offerCardWidth = 240 + 24; // w-60 (240px) + gap-6 (24px)
+            offerNext.addEventListener('click', () => {
+                offerSlider.scrollBy({ left: offerCardWidth, behavior: 'smooth' });
+            });
+            offerPrev.addEventListener('click', () => {
+                offerSlider.scrollBy({ left: -offerCardWidth, behavior: 'smooth' });
+            });
+        }
+
+        // ======================================================
+        // "TOP SPACES (INDORE)" SLIDER JAVASCRIPT
+        // ======================================================
+        const spacesSlider = document.getElementById('spaces-slider');
+        const spacesPrev = document.getElementById('spaces-prev');
+        const spacesNext = document.getElementById('spaces-next');
+        if(spacesSlider && spacesPrev && spacesNext) {
+            const spaceCardWidth = 320 + 24; // w-80 (320px) + gap-6 (24px)
+            spacesNext.addEventListener('click', () => {
+                spacesSlider.scrollBy({ left: spaceCardWidth, behavior: 'smooth' });
+            });
+            spacesPrev.addEventListener('click', () => {
+                spacesSlider.scrollBy({ left: -spaceCardWidth, behavior: 'smooth' });
+            });
+        }
+        // ======================================================
+        // "TOP SPACES (KOTA)" SLIDER JAVASCRIPT
+        // ======================================================
+        const spacesSliderKota = document.getElementById('spaces-slider-kota');
+        const spacesPrevKota = document.getElementById('spaces-prev-kota');
+        const spacesNextKota = document.getElementById('spaces-next-kota');
+        if(spacesSliderKota && spacesPrevKota && spacesNextKota) {
+            const spaceCardWidth = 320 + 24; // w-80 (320px) + gap-6 (24px)
+            spacesNextKota.addEventListener('click', () => {
+                spacesSliderKota.scrollBy({ left: spaceCardWidth, behavior: 'smooth' });
+            });
+            spacesPrevKota.addEventListener('click', () => {
+                spacesSliderKota.scrollBy({ left: -spaceCardWidth, behavior: 'smooth' });
+            });
+        }
+        
+        // Featured Stays Slider
+        const featuredSlider = document.getElementById('featured-slider');
+        const featuredPrev = document.getElementById('featured-prev');
+        const featuredNext = document.getElementById('featured-next');
+        if(featuredSlider && featuredPrev && featuredNext) {
+            const featuredCardWidth = 320 + 24; // w-80 (320px) + gap-6 (24px)
+            featuredNext.addEventListener('click', () => {
+                featuredSlider.scrollBy({ left: featuredCardWidth, behavior: 'smooth' });
+            });
+            featuredPrev.addEventListener('click', () => {
+                featuredSlider.scrollby({ left: -featuredCardWidth, behavior: 'smooth' });
+            });
+        }
+
+        /*
+        ============================================================
+        Hero Slideshow
+        ============================================================
+        */
+        const heroWrapper = document.getElementById('hero-image-wrapper');
+        if (heroWrapper) {
+            const heroImages = heroWrapper.querySelectorAll('img');
+            const totalHeroImages = heroImages.length;
+            let currentHeroIndex = 0;
+
+            if (totalHeroImages > 1) {
+                setInterval(() => {
+                    const nextHeroIndex = (currentHeroIndex + 1) % totalHeroImages;
+                    
+                    heroImages[currentHeroIndex].classList.remove('opacity-100');
+                    heroImages[currentHeroIndex].classList.add('opacity-0');
+                    
+                    heroImages[nextHeroIndex].classList.remove('opacity-0');
+                    heroImages[nextHeroIndex].classList.add('opacity-100');
+                    
+                    currentHeroIndex = nextHeroIndex;
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
