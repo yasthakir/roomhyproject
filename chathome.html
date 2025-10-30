@@ -3,263 +3,543 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomhy - Chat</title>
+    <title>My Chats - Roomhy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                keyframes: {
+                    kenburns: {
+                        '0%': { transform: 'scale(1) translate(0, 0)' },
+                        '100%': { transform: 'scale(1.1) translate(-2%, 2%)' },
+                    },
+                    'slide-left': {
+                        '0%': { transform: 'translateX(0%)' },
+                        '100%': { transform: 'translateX(-50%)' },
+                    },
+                    'slide-right': {
+                        '0%': { transform: 'translateX(-50%)' },
+                        '100%': { transform: 'translateX(0%)' },
+                    }
+                },
+                    animation: {
+                        kenburns: 'kenburns 30s ease-in-out infinite alternate',
+                        'slide-left-infinite': 'slide-left 40s linear infinite',
+                        'slide-right-infinite': 'slide-right 40s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f1f2f6; 
             color: #1F2937;
-            /* No bottom padding needed as mobile nav is handled by main container */
         }
 
-        /* Chat bubble styles */
-        .chat-bubble-sent {
-            background-color: #dcf8c6; /* WhatsApp-like green */
-            color: #303030;
-            border-radius: 0.75rem 0.75rem 0 0.75rem; /* Adjust rounding */
-            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-        }
-        .chat-bubble-received {
-            background-color: #ffffff; /* White */
-            color: #303030;
-            border-radius: 0.75rem 0.75rem 0.75rem 0; /* Adjust rounding */
-             box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-        }
-
-        /* Chat background pattern */
-        #chat-messages-container {
-             background-color: #e5ddd5; /* WhatsApp-like background color */
-             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23bdbdbd' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-             /* Pattern opacity adjusted in the SVG fill-opacity */
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        #chat-messages {
-            overflow-y: auto;
-            /* Add some padding so bubbles don't touch edges */
-            padding: 1rem; 
+        .horizontal-slider::-webkit-scrollbar {
+            display: none;
         }
-
-         /* Custom form focus styles */
-        .form-input:focus, .form-select:focus, .form-checkbox:focus, .form-radio:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        .horizontal-slider {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
         
-        /* Custom scrollbar for chat areas */
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent; 
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: rgba(0,0,0,0.2);
-          border-radius: 20px;
-          border: 3px solid transparent;
+        .light-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
-        /* Hide scrollbar by default on main body if not needed */
-        html {
-            overflow-y: auto; /* Or scroll, depending on preference */
+      /* ====== Premium Footer Styling ====== */
+        .footer {
+          font-family: 'Inter', sans-serif;
+          color: #e5e7eb;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          position: relative;
+          overflow: hidden;
         }
         
+        .footer a {
+          color: #cbd5e1;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+          color: #60a5fa;
+        }
+        
+        .footer-top {
+          background: rgba(255, 255, 255, 0.04);
+          text-align: center;
+          padding: 2rem 1.5rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .footer-top h2 {
+          font-size: 1.4rem;
+          color: #ffffff;
+          margin-bottom: 1.5rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          
+        }
+        
+        .footer-presence {
+          display: flex;
+          justify-content: left;
+          flex-wrap: wrap;
+          gap: 450px;
+          padding-left: 50px;
+        }
+        
+        .footer-presence h4 {
+          color: #60a5fa;
+          margin-bottom: 0.6rem;
+        }
+        
+        .footer-presence ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-presence li {
+          margin: 0.3rem 0;
+        }
+        
+        .footer-main {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+          gap: 2rem;
+          padding: 3rem 2rem;
+          align-items: start;
+        }
+        
+        .footer-logo img {
+          width: 180px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo p {
+          color: #cbd5e1;
+          font-size: 0.95rem;
+        }
+        
+        .footer-links h4,
+        .footer-legal h4,
+        .footer-contact h4 {
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 1rem;
+          position: relative;
+        }
+        
+        .footer-links h4::after,
+        .footer-legal h4::after,
+        .footer-contact h4::after {
+          content: '';
+          position: absolute;
+          bottom: -0.4rem;
+          left: 0;
+          width: 40px;
+          height: 2px;
+          background: #60a5fa;
+          border-radius: 2px;
+        }
+        
+        .footer-links ul,
+        .footer-legal ul {
+          list-style: none;
+          padding: 0;
+        }
+        
+        .footer-links li,
+        .footer-legal li {
+          margin-bottom: 0.4rem;
+        }
+        
+        .footer-contact p {
+          color: #d1d5db;
+          margin: 0.4rem 0;
+          font-size: 0.95rem;
+        }
+        
+        .footer-contact i {
+          color: #60a5fa;
+          margin-right: 0.4rem;
+        }
+        
+        .footer-social {
+          margin-top: 0.8rem;
+        }
+        
+        .footer-social a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+          width: 35px;
+          height: 35px;
+          border-radius: 8px;
+          margin-right: 0.6rem;
+          transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+          background: #60a5fa;
+          color: #0f172a;
+          transform: translateY(-4px);
+        }
+        
+        .footer-bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          text-align: center;
+          padding: 1rem;
+          font-size: 0.9rem;
+          color: #9ca3af;
+          background: rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+          .footer-presence {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            padding-left: 1rem;
+            gap: 0;
+           
+          }
+        
+          .footer-main {
+            grid-template-columns: 1fr;
+            text-align: left;
+          }
+        
+          .footer-logo img {
+            margin-bottom: 1rem;
+          }
+        
+          .footer-social {
+            justify-content: flex-start;
+          }
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-sm shadow-sm flex-shrink-0">
+    <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-sm shadow-sm">
         <div class="container mx-auto px-4 sm:px-6">
             <div class="flex h-20 items-center justify-between">
-                <a href="index.html" class="flex-shrink-0">
-                    <img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto">
-                </a>
-                <nav class="hidden items-center space-x-6 lg:flex">
-                    <a href="index.html#why-roomhy" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
-                    <a href="index.html#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact</a>
-                    <a href="index.html#register-property" class="ml-4 flex items-center space-x-1 bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                        <span>Post Your Property</span>
+                
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0">
+                        <img src="logo.svg" alt="Roomhy Logo" class="h-10 w-auto">
                     </a>
-                </nav>
-                <button id="menu-toggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden">
-                    <i data-lucide="menu" class="w-7 h-7 text-gray-800"></i>
-                </button>
+                </div>
+                
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <nav class="hidden lg:flex items-center space-x-6">
+                        <a href="index.html#why-roomhy" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+                        <a href="contact.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact</a>
+                    </nav>
+
+                    <a href="index.html#register-property" class="flex-shrink-0 flex items-center space-x-1 bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Post <span class="hidden sm:inline">Your</span> Property</span>
+                    </a>
+                    
+                    <button id="menu-toggle" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i data-lucide="menu" class="w-7 h-7 text-gray-800"></i>
+                    </button>
+                </div>
+
             </div>
         </div>
     </header>
+    <section class="relative py-20 md:py-28 text-white">
+        <div id="hero-image-wrapper" class="absolute inset-0 w-full h-full overflow-hidden">
+            
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1980&auto:format&fit=crop" 
+                 alt="Hero background 1" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-100">
+            
+            <img src="httpsG://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 2" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
+            
+            <img src="httpsG://images.unsplash.com/photo-1494203484021-3c454daf695d?q=80&w=2070&auto:format&fit=crop" 
+                 alt="Hero background 3" 
+                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out animate-kenburns opacity-0">
 
-    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
-    <div id="mobile-menu" class="fixed top-0 right-0 w-72 h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
-         <div class="flex justify-between items-center p-4 border-b flex-shrink-0">
-            <h2 class="text-xl font-bold text-blue-600">Menu</h2>
-            <button id="menu-close" class="p-2"><i data-lucide="x" class="w-6 h-6 text-gray-700"></i></button>
+            <div class="absolute inset-0 w-full h-full bg-black/60"></div> 
         </div>
-        <div class="p-4 border-b"><p class="text-gray-800 font-medium">Hi, User Name</p></div>
-        <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
-             <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="briefcase" class="w-5 h-5"></i><span>My Bookings</span></a>
-            <a href="index.html#register-property" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="building" class="w-5 h-5"></i><span>List Your Property</span></a>
-            <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="life-buoy" class="w-5 h-5"></i><span>24/7 Support</span></a>
-             <a href="index.html#why-roomhy" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="info" class="w-5 h-5"></i><span>About Us</span></a>
-            <a href="index.html#contact" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="mail" class="w-5 h-5"></i><span>Contact Us</span></a>
+
+        <div class="container mx-auto px-4 sm:px-6 text-center relative z-10">
+            <h1 class=" text-1l md:text-4xl font-bold text-shadow mb-6 " style="color: #fffcf2;">
+                SEARCH.CONNECT.SUCCEED
+            </h1>
+            <div class="relative w-full max-w-2xl mx-auto">
+                <input type="text" placeholder="Search for 'PG near me' or 'Hostel in Kota'" class="w-full p-4 pl-5 pr-14 rounded-lg bg-white text-gray-900 border-transparent focus:ring-4 focus:ring-cyan-300/50 focus:outline-none placeholder-gray-500 shadow-lg">
+                <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 p-2.5 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    <i data-lucide="search" class="w-5 h-5 text-white"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+    
+    <div id="mobile-menu" class="fixed top-0 right-0 w-80 h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="flex justify-end p-4 flex-shrink-0">
+            <button id="menu-close" class="p-2">
+                <i data-lucide="x" class="w-6 h-6 text-gray-700"></i>
+            </button>
+        </div>
+
+        <div class="flex justify-between items-center px-6 py-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i data-lucide="users" class="w-6 h-6 text-gray-600"></i>
+                </div>
+                <span class="text-lg font-semibold text-gray-800">Hi,welcome 👋</span>
+            </div>
+            <a href="profile-settings.html" class="text-sm font-medium text-blue-600 hover:underline">Profile</a>
+        </div>
+
+        <div class="px-6 py-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 relative overflow-hidden">
+                <img src="images/post.png" alt="Illustartion of people with house" class="absolute right-0 bottom-0 opacity-80 w-32 h-auto" style="pointer-events: none;">
+                <p class="font-semibold text-gray-800 mb-3 relative z-10">Looking to Sell/Rent your Property?</p>
+                <a href="index.html#register-property" class="block text-center w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg text-sm hover:bg-blue-700 transition-colors relative z-10" style="width: 150px;">
+                    Post Property for Free
+                </a>
+            </div>
+        </div>
+
+        <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+            <a href="ourproperty.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <span>Our Properties</span>
+            </a>
+            <a href="favorites.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="heart" class="w-5 h-5 text-red-600"></i>
+                </div>
+                <span>Favorites</span>
+            </a>
+            <a href="chat-home.html" class="flex items-center space-x-4 p-3 rounded-lg text-blue-600 bg-blue-50">
+                 <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="message-square" class="w-5 h-5 text-green-600"></i>
+                </div>
+                <span>Chats</span>
+            </a>
+            <a href="my-stays.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="building" class="w-5 h-5 text-purple-600"></i>
+                </div>
+                <span>My Stays</span>
+            </a>
+            <a href="index.html#why-roomhy" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="info" class="w-5 h-5 text-yellow-600"></i>
+                </div>
+                <span>About Us</span>
+            </a>
+            <a href="contact.html" class="flex items-center space-x-4 p-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="phone" class="w-5 h-5 text-cyan-600"></i>
+                </div>
+                <span>Contact Us</span>
+            </a>
         </nav>
+        
         <div class="p-4 border-t flex-shrink-0">
-            <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600"><i data-lucide="log-out" class="w-5 h-5"></i><span>Logout</span></a>
+            <a href="#" class="flex items-center space-x-4 p-3 rounded-lg text-red-600 hover:bg-red-50">
+                <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="log-out" class="w-5 h-5 text-gray-600"></i>
+                </div>
+                <span>Logout</span>
+            </a>
         </div>
     </div>
-
-    <main class="container mx-auto px-0 sm:px-4 md:px-6 py-0 md:py-4 lg:py-6" 
-          style="height: calc(100vh - 80px - 64px);" 
-          lg:style="height: calc(100vh - 80px);"> 
+       
+    <main class="container mx-auto px-4 sm:px-6 py-8 md:py-12">
         
-        <div class="flex h-full rounded-lg shadow-lg overflow-hidden bg-white">
-
-            <aside id="chat-sidebar" class="w-full lg:w-1/3 xl:w-1/4 border-r border-gray-200 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0">
-                 <div class="p-4 border-b flex-shrink-0">
-                     <h2 class="text-xl font-bold">Chats</h2>
-                     <div class="relative mt-4">
-                         <input type="text" placeholder="Search chats..." class="w-full form-input pl-10 pr-4 py-2 border border-gray-200 rounded-full bg-gray-100 focus:bg-white focus:border-blue-500">
-                         <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                             <i data-lucide="search" class="w-5 h-5"></i>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="flex-grow overflow-y-auto custom-scrollbar p-2 space-y-1">
-                     <a href="#" class="contact-item flex items-center space-x-3 p-3 rounded-lg bg-blue-50 hover:bg-blue-100 cursor-pointer" data-chat="Priya Sharma">
-                         <div class="relative flex-shrink-0">
-                             <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Priya Sharma" class="w-12 h-12 rounded-full">
-                             <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span> </div>
-                         <div class="flex-grow overflow-hidden">
-                             <div class="flex justify-between items-center">
-                                 <p class="font-semibold text-blue-700 truncate">Priya Sharma</p>
-                                 <p class="text-xs text-gray-500 flex-shrink-0 ml-2">6:15 PM</p>
-                             </div>
-                             <div class="flex justify-between items-center mt-1">
-                                 <p class="text-sm text-gray-600 truncate">Okay, sounds good! See you...</p>
-                                 </div>
-                         </div>
-                     </a>
-                     <a href="#" class="contact-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer" data-chat="Rohan Mehra">
-                          <div class="relative flex-shrink-0">
-                             <img src="https://i.pravatar.cc/150?u=a042581f4e29026704a" alt="Rohan Mehra" class="w-12 h-12 rounded-full">
-                         </div>
-                         <div class="flex-grow overflow-hidden">
-                             <div class="flex justify-between items-center">
-                                 <p class="font-semibold text-gray-800 truncate">Rohan Mehra</p>
-                                 <p class="text-xs text-gray-500 flex-shrink-0 ml-2">Yesterday</p>
-                             </div>
-                             <div class="flex justify-between items-center mt-1">
-                                 <p class="text-sm text-gray-500 truncate">Can you share the location again?</p>
-                                  <span class="flex-shrink-0 ml-2 bg-blue-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">3</span> </div>
-                         </div>
-                     </a>
-                     <a href="#" class="contact-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer" data-chat="Sunshine PG">
-                         <div class="relative flex-shrink-0">
-                             <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                 <i data-lucide="building-2" class="w-6 h-6"></i> </div>
-                         </div>
-                         <div class="flex-grow overflow-hidden">
-                             <div class="flex justify-between items-center">
-                                 <p class="font-semibold text-gray-800 truncate">Sunshine PG (Owner)</p>
-                                 <p class="text-xs text-gray-500 flex-shrink-0 ml-2">Oct 25</p>
-                             </div>
-                             <div class="flex justify-between items-center mt-1">
-                                 <p class="text-sm text-gray-500 truncate">Yes, the room is available.</p>
-                             </div>
-                         </div>
-                     </a>
-                     </div>
-            </aside>
-
-            <section id="chat-window" class="flex-grow flex flex-col overflow-hidden hidden lg:flex">
-                <div class="p-4 border-b flex items-center space-x-3 flex-shrink-0 bg-gray-50">
-                    <button id="back-to-contacts" class="lg:hidden p-1 -ml-1 text-gray-600 hover:text-blue-600"> 
-                         <i data-lucide="arrow-left" class="w-6 h-6"></i>
-                    </button>
-                     <img id="chat-header-img" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Priya Sharma" class="w-10 h-10 rounded-full">
-                     <div class="flex-grow">
-                         <p id="chat-header-name" class="font-semibold text-gray-900">Priya Sharma</p>
-                         <p id="chat-header-status" class="text-sm text-green-600">Online</p> 
-                     </div>
-                     <div class="flex space-x-2"> <button class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-100">
-                            <i data-lucide="phone" class="w-5 h-5"></i>
+        <div class="light-card rounded-2xl overflow-hidden shadow-xl" style="height: 700px;">
+            <div class="flex h-full">
+                <div class="w-full md:w-1/3 border-r border-gray-200 bg-gray-50 flex flex-col">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center flex-shrink-0">
+                        <h2 class="text-2xl font-bold text-gray-900">Chats</h2>
+                        <button class="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-100 rounded-lg">
+                            <i data-lucide="search" class="w-5 h-5"></i>
                         </button>
-                        <button class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-100">
-                            <i data-lucide="video" class="w-5 h-5"></i>
-                        </button>
-                        <button class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-100">
-                            <i data-lucide="more-vertical" class="w-5 h-5"></i>
-                        </button>
-                     </div>
-                </div>
+                    </div>
+                    
+                    <div class="flex-grow overflow-y-auto">
+                        <a href="#" class="flex items-center p-4 gap-3 bg-white border-b border-gray-200">
+                            <img src="httpsG://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Priya Sharma" class="w-12 h-12 rounded-full flex-shrink-0">
+                            <div class="flex-grow overflow-hidden">
+                                <h3 class="font-semibold text-gray-900 truncate">Priya Sharma</h3>
+                                <p class="text-sm text-gray-500 truncate">Great, thanks for the info! I'll let you know.</p>
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col items-end text-xs text-gray-400 space-y-1">
+                                <span>10:30 AM</span>
+                                <span class="w-5 h-5 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center">2</span>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="flex items-center p-4 gap-3 hover:bg-gray-100 border-b border-gray-200">
+                            <img src="httpsG://i.pravatar.cc/150?u=a042581f4e29026704a" alt="Rohan Mehra" class="w-12 h-12 rounded-full flex-shrink-0">
+                            <div class="flex-grow overflow-hidden">
+                                <h3 class="font-semibold text-gray-900 truncate">Rohan Mehra</h3>
+                                <p class="text-sm text-gray-500 truncate">Can you send the location?</p>
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col items-end text-xs text-gray-400 space-y-1">
+                                <span>Yesterday</span>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="flex items-center p-4 gap-3 hover:bg-gray-100 border-b border-gray-200">
+                            <div class="w-12 h-12 rounded-full flex-shrink-0 bg-purple-100 flex items-center justify-center">
+                                <i data-lucide="building" class="w-6 h-6 text-purple-600"></i>
+                            </div>
+                            <div class="flex-grow overflow-hidden">
+                                <h3 class="font-semibold text-gray-900 truncate">Owner: Urban Stay PG</h3>
+                                <p class="text-sm text-gray-500 truncate">Your booking is confirmed. Welcome!</p>
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col items-end text-xs text-gray-400 space-y-1">
+                                <span>Mon</span>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="flex items-center p-4 gap-3 hover:bg-gray-100 border-b border-gray-200">
+                            <img src="httpsG://i.pravatar.cc/150?u=a042581f4e29026704b" alt="Anjali Singh" class="w-12 h-12 rounded-full flex-shrink-0">
+                            <div class="flex-grow overflow-hidden">
+                                <h3 class="font-semibold text-gray-900 truncate">Anjali Singh</h3>
+                                <p class="text-sm text-gray-500 truncate">See you there!</p>
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col items-end text-xs text-gray-400 space-y-1">
+                                <span>10/28/25</span>
+                            </div>
+                        </a>
 
-                <div id="chat-messages-container" class="flex-grow overflow-hidden relative">
-                    <div id="chat-messages" class="absolute inset-0 flex flex-col space-y-3 custom-scrollbar">
-                         <div class="text-center my-2">
-                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Today</span>
-                         </div>
-                        <div class="flex justify-start group">
-                            <div class="chat-bubble-received max-w-[70%] md:max-w-[60%] px-4 py-2 relative">
-                                Hey! Are you still interested in the Koramangala PG?
-                                <span class="absolute bottom-1 right-2 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">6:10 PM</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-end group">
-                            <div class="chat-bubble-sent max-w-[70%] md:max-w-[60%] px-4 py-2 relative">
-                                Hi Priya! Yes, definitely. Can I visit tomorrow evening?
-                                <span class="absolute bottom-1 right-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">6:12 PM</span>
-                            </div>
-                        </div>
-                         <div class="flex justify-start group">
-                            <div class="chat-bubble-received max-w-[70%] md:max-w-[60%] px-4 py-2 relative">
-                                 Sure, around 6 PM works. I'll send you the exact location pin.
-                                 <span class="absolute bottom-1 right-2 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">6:14 PM</span>
-                            </div>
-                        </div>
-                         <div class="flex justify-end group">
-                            <div class="chat-bubble-sent max-w-[70%] md:max-w-[60%] px-4 py-2 relative">
-                                Okay, sounds good! See you then. Thanks! 👍
-                                <span class="absolute bottom-1 right-2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">6:15 PM</span>
-                            </div>
-                        </div>
-                         <div class="flex-grow"></div>
                     </div>
                 </div>
-
-                <div class="p-4 border-t flex items-center space-x-2 flex-shrink-0 bg-gray-100">
-                    <button class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-200">
-                        <i data-lucide="smile" class="w-6 h-6"></i> </button>
-                     <input type="text" placeholder="Type a message..." class="flex-grow form-input px-4 py-2 border border-gray-300 rounded-full focus:border-blue-500 focus:ring-blue-500">
-                    <button class="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-gray-200">
-                        <i data-lucide="paperclip" class="w-6 h-6"></i> </button>
-                     <button class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 flex items-center justify-center w-10 h-10">
-                        <i data-lucide="send" class="w-5 h-5"></i> </button>
+                
+                <div class="hidden md:flex w-2/3 h-full flex-col">
+                    <div class="flex-grow flex flex-col items-center justify-center text-center p-8">
+                        <div class="w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="message-circle" class="w-12 h-12"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome to your Chats</h2>
+                        <p class="text-gray-500 max-w-sm">Select a conversation from the list on the left to start chatting with property owners and other students.</p>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
+
     </main>
-    
-    <nav class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm border-t border-gray-200 z-30 lg:hidden flex-shrink-0">
-        <div class="container mx-auto px-4 h-16 flex justify-around items-center max-w-lg">
-            <a href="index.html" class="flex flex-col items-center justify-center text-gray-600 hover:text-blue-600"><i data-lucide="home" class="w-6 h-6"></i><span class="text-xs font-medium mt-0.5">Home</span></a>
-            <a href="stays.html" class="flex flex-col items-center justify-center text-gray-600 hover:text-blue-600"><i data-lucide="layout-grid" class="w-6 h-6"></i><span class="text-xs font-medium mt-0.5">Stays</span></a>
-            <a href="chat.html" class="flex flex-col items-center justify-center text-blue-600"> <i data-lucide="message-circle" class="w-6 h-6"></i><span class="text-xs font-medium mt-0.5">Chat</span></a>
-            <a href="#save" class="flex flex-col items-center justify-center text-gray-600 hover:text-blue-600"><i data-lucide="heart" class="w-6 h-6"></i><span class="text-xs font-medium mt-0.5">Save</span></a>
-            <a href="#profile" class="flex flex-col items-center justify-center text-gray-600 hover:text-blue-600"><i data-lucide="user" class="w-6 h-6"></i><span class="text-xs font-medium mt-0.5">Profile</span></a>
+    <a href="#" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+    <footer class="footer">
+      <div class="footer-top">
+        <h2>Our Presence</h2>
+        <div class="footer-presence">
+          <div>
+            <h4>Kota</h4>
+            <ul>
+              <li><a href="#">Hostels in Kota</a></li>
+              <li><a href="#">Apartments in Kota</a></li>
+              <li><a href="#">PG in Kota</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Indore</h4>
+            <ul>
+              <li><a href="#">Hostels in Indore</a></li>
+              <li><a href="#">Apartments in Indore</a></li>
+              <li><a href="#">PG in Indore</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Ahmedabad</h4>
+            <ul>
+              <li><a href="#">Hostels in Ahmedabad</a></li>
+              <li><a href="#">Apartments in Ahmedabad</a></li>
+              <li><a href="#">PG in Ahmedabad</a></li>
+            </ul>
+          </div>
         </div>
-    </nav>
-
-
+      </div>
+    
+      <div class="footer-main">
+        <div class="footer-logo">
+          <img src="https://roomhy.com/assets/logo.png" alt="Roomhy Logo">
+          <p>Discover Your Next Home, Together.</p>
+        </div>
+    
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="index.html#why-roomhy">About Us</a></li>
+            <li><a href="ourproperty.html">Our Properties</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-legal">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="cancellation-policy.html">Cancellation Policy</a></li>
+            <li><a href="refund-policy.html">Refund Policy</a></li>
+          </ul>
+        </div>
+    
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p><i class="fas fa-phone"></i> +91 99830 05030</p>
+          <p><i class="fas fa-envelope"></i> hello@roomhy.com</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    
+      <div class="footer-bottom">
+        <p>© 2025 <strong>Roomhy</strong>. All Rights Reserved.</p>
+      </div>
+    </footer>
     <script>
         lucide.createIcons();
-
-        /* Mobile Side Menu JS */
+        
+        /*
+        ============================================================
+        JavaScript for Mobile Side Menu
+        ============================================================
+        */
         const menuToggle = document.getElementById('menu-toggle');
         const menuClose = document.getElementById('menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -270,117 +550,51 @@
                 mobileMenu.classList.remove('translate-x-full');
                 menuOverlay.classList.remove('hidden');
             });
+
             const closeMenu = () => {
                 mobileMenu.classList.add('translate-x-full');
                 menuOverlay.classList.add('hidden');
             };
+
             menuClose.addEventListener('click', closeMenu);
             menuOverlay.addEventListener('click', closeMenu);
-            mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', closeMenu); });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.href.includes('#')) {
+                        setTimeout(closeMenu, 100);
+                    }
+                    // For external pages, we can just close it
+                    closeMenu();
+                });
+            });
         }
         
         /*
         ============================================================
-        NEW JavaScript for Mobile Chat Navigation
+        Hero Slideshow
         ============================================================
         */
-        const chatSidebar = document.getElementById('chat-sidebar');
-        const chatWindow = document.getElementById('chat-window');
-        const contactItems = document.querySelectorAll('.contact-item');
-        const backButton = document.getElementById('back-to-contacts');
-        const chatHeaderName = document.getElementById('chat-header-name');
-        const chatHeaderImg = document.getElementById('chat-header-img');
-        const chatHeaderStatus = document.getElementById('chat-header-status'); // Assuming you might want to update this too
+        const heroWrapper = document.getElementById('hero-image-wrapper');
+        if (heroWrapper) {
+            const heroImages = heroWrapper.querySelectorAll('img');
+            const totalHeroImages = heroImages.length;
+            let currentHeroIndex = 0;
 
-        // Function to show chat window and hide sidebar (mobile)
-        function showChatWindow(contactName, contactImgSrc) {
-            if (window.innerWidth < 1024) { // Only apply this logic on mobile
-                 chatSidebar.classList.add('-translate-x-full'); // Slide sidebar out
-                 chatSidebar.classList.add('hidden'); // Hide after transition (optional)
-                 chatWindow.classList.remove('hidden'); // Show chat window
-                 chatWindow.classList.add('flex'); // Ensure it's flex
-                 
-                 // Update chat header (example)
-                 if(chatHeaderName) chatHeaderName.textContent = contactName;
-                 if(chatHeaderImg && contactImgSrc) chatHeaderImg.src = contactImgSrc;
-                 // You might fetch real status here
-                 if(chatHeaderStatus) chatHeaderStatus.textContent = 'Online'; // Example
-            } else {
-                 // On desktop, just update header (and maybe mark contact as active)
-                 if(chatHeaderName) chatHeaderName.textContent = contactName;
-                 if(chatHeaderImg && contactImgSrc) chatHeaderImg.src = contactImgSrc;
-                 if(chatHeaderStatus) chatHeaderStatus.textContent = 'Online'; 
-
-                 // Remove active state from others, add to clicked
-                 contactItems.forEach(item => item.classList.remove('bg-blue-50'));
-                 // Find the clicked element again to add active state (or pass it in)
-                 document.querySelector(`.contact-item[data-chat="${contactName}"]`)?.classList.add('bg-blue-50');
-            }
-             // TODO: Load actual chat messages for this contact
-             // Scroll to bottom of messages (example)
-            const chatMessages = document.getElementById('chat-messages');
-            if(chatMessages) {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (totalHeroImages > 1) {
+                setInterval(() => {
+                    const nextHeroIndex = (currentHeroIndex + 1) % totalHeroImages;
+                    
+                    heroImages[currentHeroIndex].classList.remove('opacity-100');
+                    heroImages[currentHeroIndex].classList.add('opacity-0');
+                    
+                    heroImages[nextHeroIndex].classList.remove('opacity-0');
+                    heroImages[nextHeroIndex].classList.add('opacity-100');
+                    
+                    currentHeroIndex = nextHeroIndex;
+                }, 5000);
             }
         }
-
-        // Function to show sidebar and hide chat window (mobile)
-        function showContactList() {
-            if (window.innerWidth < 1024) { 
-                chatSidebar.classList.remove('-translate-x-full');
-                chatSidebar.classList.remove('hidden');
-                chatWindow.classList.add('hidden');
-                chatWindow.classList.remove('flex');
-            }
-            // No action needed on desktop
-        }
-
-        // Add click listeners to contact items
-        contactItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default link behavior
-                const contactName = item.dataset.chat || 'Chat'; // Get name from data attribute
-                const contactImg = item.querySelector('img');
-                const contactImgSrc = contactImg ? contactImg.src : 'placeholder.png'; // Get image source
-                showChatWindow(contactName, contactImgSrc);
-            });
-        });
-
-        // Add click listener to back button
-        if (backButton) {
-            backButton.addEventListener('click', () => {
-                showContactList();
-            });
-        }
-        
-        // Initial setup check on load/resize
-         function adjustLayout() {
-            if (window.innerWidth >= 1024) {
-                // Desktop: Ensure sidebar is visible and chat window is visible
-                chatSidebar.classList.remove('-translate-x-full', 'hidden');
-                chatSidebar.classList.add('flex');
-                chatWindow.classList.remove('hidden');
-                 chatWindow.classList.add('flex');
-            } else {
-                // Mobile: By default show sidebar, hide chat (unless a chat was previously active)
-                // This logic might need refinement based on remembering the state
-                 if (!chatWindow.classList.contains('flex')) { // If chat window wasn't forced open
-                    chatSidebar.classList.remove('-translate-x-full', 'hidden');
-                    chatWindow.classList.add('hidden');
-                    chatWindow.classList.remove('flex');
-                 }
-            }
-         }
-
-         window.addEventListener('resize', adjustLayout);
-         adjustLayout(); // Run on initial load
-
-         // Scroll chat to bottom initially (example)
-         const chatMessagesOnLoad = document.getElementById('chat-messages');
-         if(chatMessagesOnLoad) {
-            chatMessagesOnLoad.scrollTop = chatMessagesOnLoad.scrollHeight;
-         }
-
     </script>
-</body>
+    </body>
 </html>
