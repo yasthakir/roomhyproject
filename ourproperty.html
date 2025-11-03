@@ -237,8 +237,10 @@
                      <label for="sort-mobile" class="sr-only">Sort by</label>
                     <select id="sort-mobile" name="sort-mobile" class="form-select w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 h-full">
                         <option>Sort by</option>
-                        <option>Price Low-High</option>
-                        <option>Price High-Low</option>
+                        <option>Bidding: Ending Soonest</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Newest Listings</option>
                     </select>
                 </div>
             </div>
@@ -263,15 +265,51 @@
                                 <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Apartment</span></label>
                             </div>
                         </div>
+
                         <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Price Range (per month)</h4>
+                            <h4 class="font-semibold text-gray-800 mb-3">Bid Range (Per Month)</h4>
+                            <div class="flex items-center space-x-3">
+                                <div class="relative w-1/2">
+                                    <span class="text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 text-sm">₹</span>
+                                    <input type="number" id="filter-bid-min" name="filter-bid-min" placeholder="Min Bid" class="w-full p-3 pl-6 rounded-lg bg-gray-50 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                                </div>
+                                <div class="text-gray-500 text-sm">to</div>
+                                <div class="relative w-1/2">
+                                    <span class="text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 text-sm">₹</span>
+                                    <input type="number" id="filter-bid-max" name="filter-bid-max" placeholder="Max Bid" class="w-full p-3 pl-6 rounded-lg bg-gray-50 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Filter properties that match your budget range.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-3">Bidding Status</h4>
                             <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="radio" name="price" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Below ₹8,000</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="price" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">₹8,000 - ₹12,000</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="price" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">₹12,000 - ₹15,000</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="price" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Above ₹15,000</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Open for Bidding</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Hot Bids (High Competition)</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Price Negotiation Only</span></label>
                             </div>
                         </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-3">Bidding End Time</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Anytime</span></label>
+                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Ending Today</span></label>
+                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Next 7 Days</span></label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-3">Occupancy / Sharing</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Single Room</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Double Sharing</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Triple Sharing</span></label>
+                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Four or More</span></label>
+                            </div>
+                        </div>
+
                         <div>
                             <h4 class="font-semibold text-gray-800 mb-3">Gender</h4>
                             <div class="space-y-2">
@@ -313,8 +351,10 @@
                              <label for="sort-desktop" class="sr-only">Sort by</label>
                             <select id="sort-desktop" name="sort-desktop" class="form-select w-full sm:w-auto rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3">
                                 <option>Sort by</option>
+                                <option>Bidding: Ending Soonest</option>
                                 <option>Price: Low to High</option>
                                 <option>Price: High to Low</option>
+                                <option>Newest Listings</option>
                             </select>
                         </div>
                     </div>
