@@ -65,7 +65,7 @@
             scrollbar-width: none;  /* Firefox */
         }
         
-        /* Custom form focus styles */
+        /* Custom form focus styles (ENHANCED) */
         .form-checkbox:checked {
             background-color: #3b82f6;
             border-color: #3b82f6;
@@ -74,10 +74,11 @@
             background-color: #3b82f6;
             border-color: #3b82f6;
         }
+        /* ENHANCED FOCUS RING FOR SELECT/INPUTS */
         .form-input:focus, .form-select:focus, .form-checkbox:focus, .form-radio:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); /* Thicker focus ring */
         }
         
         /* Ensure sticky sidebar doesn't overlap header */
@@ -246,89 +247,251 @@
             </div>
         </div>
 
+        <div id="filter-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+        <div id="mobile-filter-drawer" class="fixed top-0 right-0 w-80 max-w-full h-full bg-white z-50 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+            <div class="p-4 border-b flex justify-between items-center shadow-sm">
+                <h3 class="text-xl font-bold">Filters</h3>
+                <button id="close-filter-mobile" class="p-2 text-gray-600 hover:text-gray-800">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 h-full overflow-y-auto pb-24">
+                <div class="space-y-6">
+                    
+                    <div class="pb-4">
+                        <label for="mobile-select-city" class="font-bold text-gray-800 mb-2 block">Select City</label>
+                        <select id="mobile-select-city" class="form-select w-full rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                            <option>Kota, Rajasthan</option>
+                            <option>Koramangala, Bangalore</option>
+                            <option>Hinjewadi, Pune</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pb-4">
+                        <label for="mobile-select-area" class="font-bold text-gray-800 mb-2 block">Select Area</label>
+                        <select id="mobile-select-area" class="form-select w-full rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                            <option>Select an area</option>
+                            <option>North Campus</option>
+                            <option>Vijay Nagar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pb-4">
+                        <p class="font-bold text-gray-800 mb-3">Price Range</p>
+                        <div class="flex items-center space-x-2">
+                            <label for="mobile-min-price" class="sr-only">Min Price</label>
+                            <select id="mobile-min-price" class="form-select w-1/2 rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                                <option>₹1500</option>
+                                <option>₹4000</option>
+                            </select>
+                            <span class="text-gray-400">-</span>
+                            <label for="mobile-max-price" class="sr-only">Max Price</label>
+                            <select id="mobile-max-price" class="form-select w-1/2 rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                                <option>₹50000</option>
+                                <option>₹15000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <details class="group pb-3 open:pb-4 border-b border-gray-200" open>
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Gender</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                        <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_gender" value="boys">
+                                <span>Boys</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_gender" value="girls">
+                                <span>Girls</span>
+                            </label>
+                            <label class="col-span-2 border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_gender" value="co-ed">
+                                <span>Co-ed</span>
+                            </label>
+                        </div>
+                    </details>
+
+                    <details class="group pb-3 border-b border-gray-200">
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Property Type</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                        <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_property_type" value="pg">
+                                <span>PG / Co-Living</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_property_type" value="hostel">
+                                <span>Hostel</span>
+                            </label>
+                            <label class="col-span-2 border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_property_type" value="flat">
+                                <span>Flat / Studio</span>
+                            </label>
+                        </div>
+                    </details>
+
+                    <details class="group pb-3 border-b border-gray-200">
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Occupancy</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                        <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_occupancy" value="single">
+                                <span>Single Room</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_occupancy" value="double">
+                                <span>Double Sharing</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_occupancy" value="triple">
+                                <span>Triple Sharing</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="mobile_occupancy" value="multi">
+                                <span>Multi Sharing</span>
+                            </label>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full p-4 bg-white border-t shadow-lg">
+                <button id="mobile-apply-filters" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+                    Apply Filters
+                </button>
+            </div>
+        </div>
+
 
         <div class="lg:grid lg:grid-cols-4 lg:gap-8">
             
-            <aside id="filter-sidebar" class="lg:col-span-1 lg:sticky h-fit mb-8 lg:mb-0 hidden lg:block"> 
-                <div class="light-card rounded-2xl p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-gray-900">Filters</h3>
-                        <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">Clear All</button>
+            <aside id="filter-sidebar" class="lg:col-span-1 lg:sticky h-fit mb-8 lg:mb-0 hidden lg:block lg:w-72 p-6 light-card rounded-xl transition-all duration-300">
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <h3 class="text-xl font-bold text-gray-900 flex items-center">
+                        <i data-lucide="filter" class="w-5 h-5 mr-2 text-blue-600"></i>
+                        Advanced Filters
+                    </h3>
+                    <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                        Clear All
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    
+                    <div class="pb-4">
+                        <label for="desktop-select-city" class="font-bold text-gray-800 mb-2 block">Select City</label>
+                        <select id="desktop-select-city" class="form-select w-full rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                            <option>Kota, Rajasthan</option>
+                            <option>Koramangala, Bangalore</option>
+                            <option>Hinjewadi, Pune</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pb-4">
+                        <label for="desktop-select-area" class="font-bold text-gray-800 mb-2 block">Select Area</label>
+                        <select id="desktop-select-area" class="form-select w-full rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                            <option>Select an area</option>
+                            <option>North Campus</option>
+                            <option>Vijay Nagar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pb-4">
+                        <p class="font-bold text-gray-800 mb-3">Price Range</p>
+                        <div class="flex items-center space-x-2">
+                            <label for="desktop-min-price" class="sr-only">Min Price</label>
+                            <select id="desktop-min-price" class="form-select w-1/2 rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                                <option>₹1500</option>
+                                <option>₹4000</option>
+                            </select>
+                            <span class="text-gray-400">-</span>
+                            <label for="desktop-max-price" class="sr-only">Max Price</label>
+                            <select id="desktop-max-price" class="form-select w-1/2 rounded-xl border-gray-300 shadow-md focus:ring-2 focus:ring-blue-500/50 py-3 px-4">
+                                <option>₹50000</option>
+                                <option>₹15000</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <form class="space-y-6">
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Property Type</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">PG / Co-Living</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Hostel</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Apartment</span></label>
-                            </div>
+                    <details class="group pb-3 open:pb-4 border-b border-gray-200" open>
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Gender</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                        <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_gender" value="boys">
+                                <span>Boys</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_gender" value="girls">
+                                <span>Girls</span>
+                            </label>
+                            <label class="col-span-2 border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_gender" value="co-ed">
+                                <span>Co-ed</span>
+                            </label>
                         </div>
+                    </details>
 
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Bid Range (Per Month)</h4>
-                            <div class="flex items-center space-x-3">
-                                <div class="relative w-1/2">
-                                    <span class="text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 text-sm">₹</span>
-                                    <input type="number" id="filter-bid-min" name="filter-bid-min" placeholder="Min Bid" class="w-full p-3 pl-6 rounded-lg bg-gray-50 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
-                                </div>
-                                <div class="text-gray-500 text-sm">to</div>
-                                <div class="relative w-1/2">
-                                    <span class="text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 text-sm">₹</span>
-                                    <input type="number" id="filter-bid-max" name="filter-bid-max" placeholder="Max Bid" class="w-full p-3 pl-6 rounded-lg bg-gray-50 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-2">Filter properties that match your budget range.</p>
+                    <details class="group pb-3 border-b border-gray-200">
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Property Type</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                         <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_property_type" value="pg">
+                                <span>PG / Co-Living</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_property_type" value="hostel">
+                                <span>Hostel</span>
+                            </label>
+                            <label class="col-span-2 border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_property_type" value="flat">
+                                <span>Flat / Studio</span>
+                            </label>
                         </div>
-                        
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Bidding Status</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Open for Bidding</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Hot Bids (High Competition)</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Price Negotiation Only</span></label>
-                            </div>
-                        </div>
+                    </details>
 
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Bidding End Time</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Anytime</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Ending Today</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="bidding-end" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Next 7 Days</span></label>
-                            </div>
+                    <details class="group pb-3 border-b border-gray-200">
+                        <summary class="flex justify-between items-center font-bold text-gray-900 cursor-pointer list-none py-2 -mx-2 px-2 transition-colors hover:bg-gray-50 rounded-md">
+                            <span>Occupancy</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 group-open:rotate-180 text-blue-600"></i>
+                        </summary>
+                        <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_occupancy" value="single">
+                                <span>Single Room</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_occupancy" value="double">
+                                <span>Double Sharing</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_occupancy" value="triple">
+                                <span>Triple Sharing</span>
+                            </label>
+                            <label class="border border-gray-300 rounded-xl p-3 cursor-pointer text-center font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-blue-400 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                                <input type="checkbox" class="sr-only" name="desktop_occupancy" value="multi">
+                                <span>Multi Sharing</span>
+                            </label>
                         </div>
-
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Occupancy / Sharing</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Single Room</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Double Sharing</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Triple Sharing</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Four or More</span></label>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Gender</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="radio" name="gender" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Any</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="gender" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Boys</span></label>
-                                <label class="flex items-center text-gray-700"><input type="radio" name="gender" class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Girls</span></label>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-3">Amenities</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Wi-Fi</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Food Included</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">AC</span></label>
-                                <label class="flex items-center text-gray-700"><input type="checkbox" class="form-checkbox h-5 w-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500"><span class="ml-3">Laundry</span></label>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full glow-button text-white px-8 py-3 rounded-lg font-semibold text-lg" style="background: linear-gradient(90deg, #06b6d4, #3b82f6); box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);">Apply Filters</button>
-                    </form>
+                    </details>
+                    
+                    <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors mt-6 glow-button">
+                        Apply Filters
+                    </button>
                 </div>
             </aside>
 
@@ -423,7 +586,7 @@
     <script>
         lucide.createIcons();
 
-        /* Mobile Side Menu JS */
+        /* Mobile Side Menu JS (Existing Logic) */
         const menuToggle = document.getElementById('menu-toggle');
         const menuClose = document.getElementById('menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -443,15 +606,40 @@
             mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', closeMenu); });
         }
         
-        /* Filter Toggle JS (Mobile & Desktop) */
-        const filterToggleMobile = document.getElementById('filter-toggle');
-        const filterToggleDesktop = document.getElementById('filter-toggle-desktop');
-        const filterSidebar = document.getElementById('filter-sidebar');
-        const mainContentArea = document.getElementById('main-content-area');
+        /* Filter Toggle JS (Mobile & Desktop) - NEW LOGIC */
+        const filterToggleMobile = document.getElementById('filter-toggle'); 
+        const filterToggleDesktop = document.getElementById('filter-toggle-desktop'); 
+        const filterSidebar = document.getElementById('filter-sidebar'); 
+        const mainContentArea = document.getElementById('main-content-area'); 
+        
+        // New variables for the mobile drawer
+        const mobileFilterDrawer = document.getElementById('mobile-filter-drawer');
+        const closeFilterMobile = document.getElementById('close-filter-mobile');
+        const filterOverlay = document.getElementById('filter-overlay');
 
-        function toggleFilters() {
-            if (!filterSidebar || !mainContentArea) return;
-
+        // Toggle function for the mobile drawer (Slide-in/out from right)
+        function toggleMobileFilterDrawer() {
+            if (!mobileFilterDrawer || !filterOverlay) return;
+            const isHidden = mobileFilterDrawer.classList.contains('translate-x-full');
+            
+            if (isHidden) {
+                // Show drawer
+                mobileFilterDrawer.classList.remove('translate-x-full');
+                mobileFilterDrawer.classList.add('translate-x-0');
+                filterOverlay.classList.remove('hidden');
+            } else {
+                // Hide drawer
+                mobileFilterDrawer.classList.remove('translate-x-0');
+                mobileFilterDrawer.classList.add('translate-x-full');
+                filterOverlay.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+        
+        // Toggle function for the desktop sidebar (Show/Hide)
+        function toggleDesktopSidebar() {
+            if (!filterSidebar || !mainContentArea || !filterToggleDesktop) return;
+            
             const isNowHidden = filterSidebar.classList.toggle('hidden');
             
             // On desktop, adjust grid
@@ -463,30 +651,32 @@
                 // Ensure sidebar is shown/hidden correctly on desktop
                 filterSidebar.classList.toggle('lg:block', !isNowHidden);
             }
-
-            // Update mobile button text
-            if (filterToggleMobile) {
-                if (isNowHidden) {
-                    filterToggleMobile.innerHTML = '<i data-lucide="filter" class="w-5 h-5"></i> <span>Filters</span>';
-                } else {
-                    filterToggleMobile.innerHTML = '<i data-lucide="x" class="w-5 h-5"></i> <span>Hide</span>';
-                }
-            }
             
             // Update desktop button style
-            if (filterToggleDesktop) {
-                 filterToggleDesktop.classList.toggle('bg-blue-50', !isNowHidden);
-                 filterToggleDesktop.classList.toggle('text-blue-600', !isNowHidden);
-            }
-
-            lucide.createIcons(); 
+            filterToggleDesktop.classList.toggle('bg-blue-50', !isNowHidden);
+            filterToggleDesktop.classList.toggle('text-blue-600', !isNowHidden);
+            
+            lucide.createIcons();
         }
 
+        // --- Attach Event Listeners ---
         if (filterToggleMobile) {
-            filterToggleMobile.addEventListener('click', toggleFilters);
+            filterToggleMobile.addEventListener('click', toggleMobileFilterDrawer);
         }
+        if (closeFilterMobile) {
+            closeFilterMobile.addEventListener('click', toggleMobileFilterDrawer);
+        }
+        if (filterOverlay) {
+            filterOverlay.addEventListener('click', toggleMobileFilterDrawer);
+        }
+        // Also attach the apply button to close the drawer for convenience
+        const mobileApplyFilters = document.getElementById('mobile-apply-filters');
+        if (mobileApplyFilters) {
+            mobileApplyFilters.addEventListener('click', toggleMobileFilterDrawer);
+        }
+        
         if (filterToggleDesktop) {
-            filterToggleDesktop.addEventListener('click', toggleFilters);
+            filterToggleDesktop.addEventListener('click', toggleDesktopSidebar);
         }
         
         /* Hero Slideshow JS */
